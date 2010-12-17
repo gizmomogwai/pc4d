@@ -79,6 +79,7 @@ class Parser(T) {
       if ((res.rest is null) || (res.rest.length == 0)) {
         return res;
       } else {
+        writeln(res.rest);
         return ParseResult!(T).error("string not completely consumed"/*, res.rest*/);
       }
     } else {
@@ -258,9 +259,9 @@ class Parser(T) {
     ParseResult!(immutable(char)) parse(string s) {
       auto res = std.regex.match(s, regex(fRegex));
       if (res.empty()) {
-        return ParseResult!(immutable(char)).error("did not match " ~ fRegex);
+        return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
       } else if (res.pre.length > 0) {
-        return ParseResult!(immutable(char)).error("did not match " ~ fRegex);
+        return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
       } else {
         auto results = appender!(Variant[])();
         foreach (c; res.captures) {
@@ -324,6 +325,13 @@ class Parser(T) {
 
   }
 
+}
+
+Parser!(T) killResults(T)(Parser!(T) parser) {
+  return parser ^^ (Variant[] input) {
+    Variant[] res;
+    return res;
+  };
 }
 
 Parser!(T) match(T)(T[] s, bool collect=true) {

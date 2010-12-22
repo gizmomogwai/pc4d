@@ -79,7 +79,6 @@ class Parser(T) {
       if ((res.rest is null) || (res.rest.length == 0)) {
         return res;
       } else {
-        writeln(res.rest);
         return ParseResult!(T).error("string not completely consumed"/*, res.rest*/);
       }
     } else {
@@ -252,8 +251,10 @@ class Parser(T) {
 
   static class RegexParser : Parser!(immutable(char)) {
     string fRegex;
-    this(string regex) {
+    bool fCollect;
+    this(string regex, bool collect=true) {
       fRegex = regex;
+      fCollect = collect;
     }
 
     ParseResult!(immutable(char)) parse(string s) {
@@ -263,12 +264,16 @@ class Parser(T) {
       } else if (res.pre.length > 0) {
         return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
       } else {
-        auto results = appender!(Variant[])();
-        foreach (c; res.captures) {
-          Variant v = c;
-          results.put(v);
+        if (fCollect) {
+          auto results = appender!(Variant[])();
+          foreach (c; res.captures) {
+            Variant v = c;
+            results.put(v);
+          }
+          return transform(ParseResult!(immutable(char)).ok(res.post, results.data));
+        } else {
+          return success(res.post);
         }
-        return transform(ParseResult!(immutable(char)).ok(res.post, results.data));
       }
     }
   }

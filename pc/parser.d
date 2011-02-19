@@ -233,18 +233,18 @@ class Parser(T) {
     }
 
     ParseResult!(T) parse(T[] s) {
-      auto results = appender!(Variant[])();
+      Variant[] results;
       auto rest = s;
       while (true) {
         auto res = fToRepeat.parse(rest);
         if (res.success) {
           rest = res.rest;
-          results.put(res.results);
+          results = results ~ res.results;
         } else {
           break;
         }
       }
-      return transform(ParseResult!(T).ok(rest, results.data));
+      return transform(ParseResult!(T).ok(rest, results));
     }
 
   }

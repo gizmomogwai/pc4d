@@ -413,36 +413,36 @@ Parser!(T) lazyParser(T)(Parser!(T) function() parser) {
 }
 
 unittest {
-std.stdio.writeln("match 1");
+  debug {std.stdio.writeln("match 1");}
   auto parser = match("test");
   auto res = parser.parseAll("test");
   assert(res.success);
-std.stdio.writeln("match 1 finished");
+  debug{std.stdio.writeln("match 1 finished");}
 }
 
 
 
 unittest {
-std.stdio.writeln("match 2");
+  debug{std.stdio.writeln("match 2");}
 
   auto parser = match("test");
   auto res = parser.parse("test");
   assert(res.success);
   assert(res.rest is null || res.rest.length == 0);
-std.stdio.writeln("match 2 finished");
+  debug{std.stdio.writeln("match 2 finished");}
 }
 
 unittest {
-std.stdio.writeln("match 3");
+  debug{std.stdio.writeln("match 3");}
 
   auto parser = match("test");
   auto res = parser.parse("abc");
   assert(!res.success);
-std.stdio.writeln("match 3 finished");
+  debug{std.stdio.writeln("match 3 finished");}
 }
 
 unittest {
-std.stdio.writeln("match 4");
+  debug{std.stdio.writeln("match 4");}
 
   auto parser = match("test");
   auto res = parser.parse("test2");
@@ -450,12 +450,12 @@ std.stdio.writeln("match 4");
   assert(res.rest == "2");
   res = parser.parseAll("test2");
   assert(!res.success);
-std.stdio.writeln("match 4 finished");
+  debug{std.stdio.writeln("match 4 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 5");
+  debug{std.stdio.writeln("match 5");}
 
   auto parser = match("test") ^^ (Variant[] objects) {
     auto res = objects;
@@ -467,64 +467,64 @@ std.stdio.writeln("match 5");
   auto res = parser.parse("test");
   assert(res.success);
   assert(res.results[0] == "super");
-std.stdio.writeln("match 5 finished");
+  debug{std.stdio.writeln("match 5 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 6");
+  debug{std.stdio.writeln("match 6");}
 
   auto parser = match("test", false);
   auto res = parser.parseAll("test");
   assert(res.success);
   assert(res.results.length == 0);
-std.stdio.writeln("match 6 finished");
+  debug{std.stdio.writeln("match 6 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 7");
+  debug{std.stdio.writeln("match 7");}
 
   auto parser = match([1, 2, 3]);
   auto res = parser.parseAll([1, 2, 3]);
   assert(res.success);
   assert(res.results.length == 1);
   assert(res.results[0] == [1, 2, 3]);
-std.stdio.writeln("match 7 finished");
+  debug{std.stdio.writeln("match 7 finished");}
 
 }
 
 
 unittest {
-std.stdio.writeln("match 8");
+  debug{std.stdio.writeln("match 8");}
 
   auto parser = match("ab") | match("cd");
   auto res = parser.parse("ab");
   assert(res.success);
-std.stdio.writeln("match 8 finished");
+  debug{std.stdio.writeln("match 8 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 9");
+  debug{std.stdio.writeln("match 9");}
 
   auto parser = match("ab") | match("cd");
   auto res = parser.parse("cde");
   assert(res.success);
   assert(res.rest == "e");
-std.stdio.writeln("match 9 finished");
+  debug{std.stdio.writeln("match 9 finished");}
 }
 unittest {
-std.stdio.writeln("match 10");
+  debug{std.stdio.writeln("match 10");}
 
   auto parser = match("ab") | match("cd");
   auto res = parser.parse("ef");
   assert(!res.success);
-std.stdio.writeln("match 10 finished");
+  debug{std.stdio.writeln("match 10 finished");}
 
 }
 unittest {
-std.stdio.writeln("match 11");
+  debug{std.stdio.writeln("match 11");}
 
   auto parser = (match("ab") | match("cd")) ^^ (Variant[] input) {
     if (input[0] == "ab") {
@@ -538,65 +538,65 @@ std.stdio.writeln("match 11");
   suc = parser.parse("cd");
   assert(suc.success);
   assert(suc.results[0] == "cd");
-std.stdio.writeln("match 11 finished");
+  debug{std.stdio.writeln("match 11 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 12");
+  debug{std.stdio.writeln("match 12");}
 
   auto parser = match("a", false) | match("b");
   auto res = parser.parse("ab");
   assert(res.success);
-std.stdio.writeln("match 12 finished");
+  debug{std.stdio.writeln("match 12 finished");}
 
 }
 
 
 
 unittest {
-std.stdio.writeln("match 13");
+  debug{std.stdio.writeln("match 13");}
 
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("ab");
   assert(res.success);
   assert(res.results.length == 2);
-std.stdio.writeln("match 13 finished");
+  debug{std.stdio.writeln("match 13 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 14");
+  debug{std.stdio.writeln("match 14");}
 
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("abc");
   assert(res.success);
   assert(res.rest == "c");
-std.stdio.writeln("match 14 finished");
+  debug{std.stdio.writeln("match 14 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 15");
+  debug{std.stdio.writeln("match 15");}
 
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("ac");
   assert(!res.success);
-std.stdio.writeln("match 15 finished");
+  debug{std.stdio.writeln("match 15 finished");}
 
 }
 unittest {
-std.stdio.writeln("match 16");
+  debug{std.stdio.writeln("match 16");}
 
   auto parser = match("a", false) ~ match("b");
   auto res = parser.parse("ab");
   assert(res.success);
-std.stdio.writeln("match 16 finished");
+  debug{std.stdio.writeln("match 16 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 17");
+  debug{std.stdio.writeln("match 17");}
 
   auto parser = (match("a") ~ match("b")) ^^ (Variant[] result) {
     string totalString;
@@ -614,12 +614,12 @@ std.stdio.writeln("match 17");
   assert(suc.success);
   assert(suc.results.length == 1);
   assert(suc.results[0] == "ab");
-std.stdio.writeln("match 17 finished");
+  debug{std.stdio.writeln("match 17 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 18");
+  debug{std.stdio.writeln("match 18");}
 
   auto abc = match("abc");
   auto opt = - abc;
@@ -628,12 +628,12 @@ std.stdio.writeln("match 18");
   assert(res.results.length == 1);
   assert(res.results[0] == "abc");
   assert(res.rest.length == 0);
-std.stdio.writeln("match 18 finished");
+  debug{std.stdio.writeln("match 18 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 19");
+  debug{std.stdio.writeln("match 19");}
 
   auto abc = match("abc");
   auto opt = - abc;
@@ -641,12 +641,12 @@ std.stdio.writeln("match 19");
   assert(res.success);
   assert(res.results.length == 0);
   assert(res.rest == "efg");
-std.stdio.writeln("match 19 finished");
+  debug{std.stdio.writeln("match 19 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 20");
+  debug{std.stdio.writeln("match 20");}
 
   auto sign = match("+");
   auto value = match("1");
@@ -656,12 +656,12 @@ std.stdio.writeln("match 20");
   assert(res.results.length == 2);
   res = test.parse("");
   assert(res.success);
-std.stdio.writeln("match 20 finished");
+  debug{std.stdio.writeln("match 20 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 21");
+  debug{std.stdio.writeln("match 21");}
 
   auto ab = -match("a") ~ match("b");
   auto res = ab.parse("ab");
@@ -672,60 +672,60 @@ std.stdio.writeln("match 21");
   assert(!res.success);
   res = ab.parse("");
   assert(!res.success);
-std.stdio.writeln("match 21 finished");
+  debug{std.stdio.writeln("match 21 finished");}
 }
 
 unittest {
-std.stdio.writeln("match 22");
+  debug{std.stdio.writeln("match 22");}
 
   auto parser = *match("a");
   auto res = parser.parse("aa");
   assert(res.success);
   assert(res.rest == "");
   assert(res.results.length == 2);
-std.stdio.writeln("match 22 finished");
+  debug{std.stdio.writeln("match 22 finished");}
 
 }
 unittest {
-std.stdio.writeln("match 23");
+  debug{std.stdio.writeln("match 23");}
 
   auto parser = *match("a");
   auto res = parser.parse("b");
   assert(res.success);
   assert(res.rest == "b");
-std.stdio.writeln("match 23 finished");
+  debug{std.stdio.writeln("match 23 finished");}
 
 }
 unittest {
-std.stdio.writeln("match 24");
+  debug{std.stdio.writeln("match 24");}
 
   auto parser = *match("a");
   auto res = parser.parse("ab");
   assert(res.success);
   assert(res.rest == "b");
-std.stdio.writeln("match 24 finished");
+  debug{std.stdio.writeln("match 24 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 25");
+  debug{std.stdio.writeln("match 25");}
 
   auto parser = *(match("+") ~ match("-"));
   auto res = parser.parse("+-+-+");
   assert(res.success);
   assert(res.rest == "+");
-std.stdio.writeln("match 25 finished");
+  debug{std.stdio.writeln("match 25 finished");}
 
 }
 unittest {
-std.stdio.writeln("match 26");
+  debug{std.stdio.writeln("match 26");}
 
   auto parser = *match("a", false);
   auto res = parser.parse("aaaa");
   assert(res.success);
   assert(res.rest.length == 0);
   assert(res.results.length == 0);
-std.stdio.writeln("match 26 finished");
+  debug{std.stdio.writeln("match 26 finished");}
 
 }
 unittest {
@@ -743,42 +743,42 @@ unittest {
 }
 
 unittest {
-std.stdio.writeln("match 28");
+  debug{std.stdio.writeln("match 28");}
 
   auto parser = new Parser!(immutable(char)).RegexParser("abc");
   auto res = parser.parse("abcd");
   assert(res.success);
   assert(res.rest == "d");
-std.stdio.writeln("match 28 finished");
+  debug{std.stdio.writeln("match 28 finished");}
 }
 unittest {
-std.stdio.writeln("match 29");
+  debug{std.stdio.writeln("match 29");}
 
   auto parser = new Parser!(immutable(char)).RegexParser("abc");
   auto res = parser.parse("babc");
   assert(!res.success);
-std.stdio.writeln("match 29 finished");
+  debug{std.stdio.writeln("match 29 finished");}
 
 }
 unittest {
-std.stdio.writeln("match 30");
+  debug{std.stdio.writeln("match 30");}
 
   auto parser = new Parser!(immutable(char)).RegexParser("(.)(.)(.)");
   auto res = parser.parse("abc");
   assert(res.success);
   assert(res.results.length == 4);
-std.stdio.writeln("match 30 finished");
+  debug{std.stdio.writeln("match 30 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 31");
+  debug{std.stdio.writeln("match 31");}
 
   auto parser = new Parser!(immutable(char)).Number;
   auto res = parser.parse("123.123");
   assert(res.success);
   assert(res.results[0] == 123.123);
-std.stdio.writeln("match 31 finished");
+  debug{std.stdio.writeln("match 31 finished");}
 
 }
 
@@ -794,7 +794,7 @@ unittest {
 }
 
 unittest {
-std.stdio.writeln("match 33");
+  debug{std.stdio.writeln("match 33");}
 
   class Endless {
     // endless -> a | a opt(endless)
@@ -813,7 +813,7 @@ std.stdio.writeln("match 33");
   res = p.parse("aab");
   assert(res.success);
   assert(res.rest == "b");
-std.stdio.writeln("match 33 finished");
+  debug{std.stdio.writeln("match 33 finished");}
 
 }
 
@@ -843,31 +843,31 @@ static class ExprParser {
 }
 
 unittest {
-std.stdio.writeln("match 34");
+  debug{std.stdio.writeln("match 34");}
 
   auto parser = new ExprParser;
   auto p = parser.expr();
   auto res = p.parse("1+2*3");
   assert(res.success);
   assert(res.results[0] == 7);
-std.stdio.writeln("match 34 finished");
+  debug{std.stdio.writeln("match 34 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 35");
+  debug{std.stdio.writeln("match 35");}
 
   auto parser = new ExprParser;
   auto p = parser.expr();
   auto res = p.parse("1*2+3");
   assert(res.success);
   assert(res.results[0] == 5);
-std.stdio.writeln("match 35 finished");
+  debug{std.stdio.writeln("match 35 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 36");
+  debug{std.stdio.writeln("match 36");}
 
   auto parser = match("a") | match("b");
   auto res = parser.parse("a");
@@ -878,12 +878,12 @@ std.stdio.writeln("match 36");
 
   res = parser.parse("c");
   assert(!res.success);
-std.stdio.writeln("match 36 finished");
+  debug{std.stdio.writeln("match 36 finished");}
 
 }
 
 unittest {
-std.stdio.writeln("match 37");
+  debug{std.stdio.writeln("match 37");}
 
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("ab");
@@ -891,6 +891,6 @@ std.stdio.writeln("match 37");
 
   res = parser.parse("ac");
   assert(!res.success);
-std.stdio.writeln("match 37 finished");
+  debug{std.stdio.writeln("match 37 finished");}
 
 }

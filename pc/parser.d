@@ -420,8 +420,6 @@ unittest {
   debug{std.stdio.writeln("match 1 finished");}
 }
 
-
-
 unittest {
   debug{std.stdio.writeln("match 2");}
 
@@ -728,6 +726,7 @@ unittest {
   debug{std.stdio.writeln("match 26 finished");}
 
 }
+
 unittest {
   debug {std.stdio.writeln("match 27");}
 
@@ -739,7 +738,6 @@ unittest {
   assert(suc.success);
   assert(suc.results.length == 1);
   assert(suc.results[0].get!(ulong) == 5);
-  debug {std.stdio.writeln("match 27 finished");}
 }
 
 unittest {
@@ -760,6 +758,7 @@ unittest {
   debug{std.stdio.writeln("match 29 finished");}
 
 }
+
 unittest {
   debug{std.stdio.writeln("match 30");}
 

@@ -97,10 +97,6 @@ class Parser(T) {
     return new Optional(this);
   }
 
-  Parser opBinary(string op)(Variant[] delegate(Variant[] objects) toCall) if (op == "^^") {
-    return setCallback(toCall);
-  }
-
   Parser opBinary(string op)(Variant[] function(Variant[] objects) toCall) if (op == "^^") {
     return setCallback(toCall);
   }

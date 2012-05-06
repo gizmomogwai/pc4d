@@ -273,15 +273,15 @@ class Parser(T) {
        auto l = fStart.length;
        for (auto i=l; i<s.length; i++) {
          if (startsWith(s, i, fEnd)) {
-	   auto lastIdx = i+fEnd.length;
-	   auto rest = s[lastIdx..$];
-	   if (fCollect) {
-	     auto matched = s[0..lastIdx];
+           auto lastIdx = i+fEnd.length;
+           auto rest = s[lastIdx..$];
+           if (fCollect) {
+             auto matched = s[0..lastIdx];
              return transform(success(rest, matched));
            } else {
             return success(rest);
            }
-	 }
+         }
        }
        return ParseResult!(T).error("");
      } else {
@@ -342,7 +342,8 @@ class Parser(T) {
         auto output = appender!(Variant[])();
         foreach (Variant o ; input) {
           string s = o.get!(string);
-          Variant v = std.conv.parse!(double, string)(s);
+          double h = std.conv.to!(double)(s);
+          Variant v = h;
           output.put(v);
         }
         return output.data;
@@ -354,7 +355,7 @@ class Parser(T) {
     this() {
       super(r"\d+") ^^ (Variant[] input) {
         string s = input[0].get!(string);
-        Variant v = std.conv.parse!(int, string)(s);
+        Variant v = std.conv.to!(int)(s);
         return variantArray(v);
       };
     }

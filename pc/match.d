@@ -99,13 +99,3 @@ unittest {
   assert(res.results.length == 1);
   assert(res.results[0] == [1, 2, 3]);
 }
-
-
-
-/// convenient function to build a parser that kills the result of another parser e.g. killResults(match("a")) succeeds, but returns an empty result
-Parser!(T) killResults(T)(Parser!(T) parser) {
-  return parser ^^ (Variant[] input) {
-    Variant[] res;
-    return res;
-  };
-}

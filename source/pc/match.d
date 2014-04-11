@@ -24,7 +24,7 @@ class Matcher(T) : Parser!(T) {
     return true;
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     if (startsWith(s, fExpected)) {
       auto rest = s[fExpected.length..$];
       if (fCollect) {

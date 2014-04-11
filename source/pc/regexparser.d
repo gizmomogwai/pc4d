@@ -2,6 +2,7 @@ module pc.regexparser;
 
 import pc.parser;
 import std.array;
+import std.regex;
 
 /// parser for regular expressions
 class RegexParser : Parser!(immutable(char)) {
@@ -12,7 +13,7 @@ class RegexParser : Parser!(immutable(char)) {
     fCollect = collect;
   }
 
-  ParseResult!(immutable(char)) parse(string s) {
+  override ParseResult!(immutable(char)) parse(string s) {
     auto res = std.regex.match(s, std.regex.regex(fRegex));
     if (res.empty()) {
       return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
@@ -44,6 +45,7 @@ unittest {
   assert(res.success);
   assert(res.rest == "d");
 }
+
 unittest {
   auto res = regexParser("abc").parse("babc");
   assert(!res.success);

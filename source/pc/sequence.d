@@ -11,7 +11,7 @@ class Sequence(T) : Parser!(T) {
     fParsers = parsers.dup;
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     auto resultObjects = appender!(Variant[])();
     T[] h = s;
     foreach (parser; fParsers) {

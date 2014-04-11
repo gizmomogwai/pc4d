@@ -12,7 +12,7 @@ class AlnumParser(T) : RegexParser {
 }
 
 /// convenient function to instantiate a AlphaNumericParser
-Parser!(T) alnum(T)(bool collect=true) {
+auto alnum(T)(bool collect=true) {
   return new AlnumParser!(T)(collect);
 }
 

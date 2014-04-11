@@ -5,7 +5,7 @@ directory 'out/docs'
 
 desc 'build out/main.exe'
 file 'out/main.exe' => sources + ['out', 'out/docs'] do |t|
-  sh "dmd -D -Ddout/docs -unittest -odout/obj -of#{t.name} #{sources.join(' ')}"
+  sh "dmd -D -Ddout/docs -X -Xfdocs.json -unittest -odout/obj -of#{t.name} #{sources.join(' ')}"
 end
 
 desc 'run out/main.exe'

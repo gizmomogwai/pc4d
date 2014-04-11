@@ -10,7 +10,7 @@ class Alternative(T) : Parser!(T) {
     fParsers = parsers.dup;
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     foreach (parser; fParsers) {
       auto res = parser.parse(s);
       if (res.success) {

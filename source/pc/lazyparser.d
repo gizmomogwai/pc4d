@@ -17,7 +17,7 @@ class LazyParser(T) : Parser!(T) {
     fCallable = toDelegate(parser);
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     auto parser = fCallable();
     return transform(parser.parse(s));
   }

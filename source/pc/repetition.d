@@ -9,7 +9,7 @@ static class Repetition(T) : Parser!(T) {
     fToRepeat = toRepeat;
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     Variant[] results;
     auto rest = s;
     while (true) {

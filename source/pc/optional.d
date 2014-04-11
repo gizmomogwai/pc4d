@@ -10,7 +10,7 @@ class Optional(T) : Parser!(T) {
     fParser = parser;
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     auto res = fParser.parse(s);
     if (!res.success) {
       return success(s);

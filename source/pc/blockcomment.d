@@ -26,7 +26,7 @@ static class BlockCommentParser(T) : Parser!(T) {
     return true;
   }
 
-  ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s) {
     if (startsWith(s, 0, fStart)) {
       auto l = fStart.length;
       for (auto i=l; i<s.length; i++) {

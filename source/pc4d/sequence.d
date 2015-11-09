@@ -1,5 +1,6 @@
-module pc.sequence;
-import pc.parser;
+module pc4d.sequence;
+
+import pc4d.parser;
 import std.array;
 import std.variant;
 import core.vararg;

@@ -1,6 +1,6 @@
-module pc.alternative;
+module pc4d.alternative;
 
-import pc.parser;
+import pc4d.parser;
 
 /// class for matching alternatives
 class Alternative(T) : Parser!(T) {

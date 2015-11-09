@@ -1,6 +1,6 @@
-module pc.alnumparser;
+module pc4d.alnumparser;
 
-import pc.parser;
+import pc4d.parser;
 
 /// parser for parsing alphanumerical values starting with a letter or -
 class AlnumParser(T) : RegexParser {

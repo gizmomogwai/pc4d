@@ -1,6 +1,7 @@
-module pc.expression;
-import pc.parser;
-import pc.number;
+module pc4d.expression;
+
+import pc4d.parser;
+import pc4d.number;
 
 /** example of an expression parser.
  * expr -> term { + term }

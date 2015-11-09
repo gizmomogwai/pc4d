@@ -1,6 +1,6 @@
-module pc.repetition;
+module pc4d.repetition;
 
-import pc.parser;
+import pc4d.parser;
 
 /// class for matching repetitions
 static class Repetition(T) : Parser!(T) {

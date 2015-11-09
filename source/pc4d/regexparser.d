@@ -1,6 +1,6 @@
-module pc.regexparser;
+module pc4d.regexparser;
 
-import pc.parser;
+import pc4d.parser;
 import std.array;
 import std.regex;
 

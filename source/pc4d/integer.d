@@ -1,6 +1,6 @@
-module pc.integer;
+module pc4d.integer;
 
-import pc.parser;
+import pc4d.parser;
 
 /// parser for parsing ints
 static class Integer : RegexParser {

@@ -1,8 +1,8 @@
-module pc.number;
+module pc4d.number;
 
-import pc.parser;
+import pc4d.parser;
 import std.array;
-import pc.regexparser;
+import pc4d.regexparser;
 
 /// parser for parsing floats
 class Number : RegexParser {

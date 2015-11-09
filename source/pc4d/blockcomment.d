@@ -1,6 +1,6 @@
-module pc.blockcomment;
+module pc4d.blockcomment;
 
-import pc.parser;
+import pc4d.parser;
 
 /// parser for blockcomments
 static class BlockCommentParser(T) : Parser!(T) {

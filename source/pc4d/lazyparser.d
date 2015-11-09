@@ -1,6 +1,6 @@
-module pc.lazyparser;
+module pc4d.lazyparser;
 
-import pc.parser;
+import pc4d.parser;
 import std.functional;
 
 /// this parser is needed to build recursive parser hierarchies

@@ -1,6 +1,6 @@
-module pc.killresults;
+module pc4d.killresults;
 
-import pc.parser;
+import pc4d.parser;
 
 /// convenient function to build a parser that kills the result of another parser e.g. killResults(match("a")) succeeds, but returns an empty result
 Parser!(T) killResults(T)(Parser!(T) parser) {

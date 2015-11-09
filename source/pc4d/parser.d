@@ -1,9 +1,9 @@
 /**
  * whats up.
  */
-module pc.parser;
+module pc4d.parser;
 
-public import pc.convenience;
+public import pc4d.convenience;
 import std.string;
 import std.stdio;
 import std.array;

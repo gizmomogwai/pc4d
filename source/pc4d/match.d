@@ -1,6 +1,6 @@
-module pc.match;
+module pc4d.match;
 
-import pc.parser;
+import pc4d.parser;
 
 
 /// class for matching an array exactly

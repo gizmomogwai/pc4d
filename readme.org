@@ -1,1 +1,1 @@
-* Parser Combinator for D
+* Parser Combinator for D [[https://travis-ci.org/gizmomogwai/pc4d][https://travis-ci.org/gizmomogwai/pc4d.svg?branch=master]]

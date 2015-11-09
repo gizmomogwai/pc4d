@@ -5,3 +5,5 @@ __dummy.html
 *.obj
 out
 ddox
+*.lst
+__*

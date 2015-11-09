@@ -1,9 +1,0 @@
-{
-    "name" : "parser-combinators",
-    "description" : "parser combinators for d",
-    "homepage" : "...",
-    "license" : "http://www.boost.org/LICENSE_1_0.txt",
-    "authors" : [
-        "Christian Köstlin"
-    ]
-}

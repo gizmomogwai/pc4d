@@ -1,0 +1,4 @@
+name "combinators_for_d"
+description "A parser combinator library."
+copyright "Copyright © 2015, gizmo"
+authors "gizmo"

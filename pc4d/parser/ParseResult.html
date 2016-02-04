@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Class ParseResult</title>
+		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="../../prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li class=" tree-view">
+								<a href="#" class="package">pc4d</a>
+						<ul class="tree-view">
+							<li>
+								<a href="../../pc4d/alnumparser.html" class=" module">alnumparser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/alternative.html" class=" module">alternative</a>
+							</li>
+							<li>
+								<a href="../../pc4d/blockcomment.html" class=" module">blockcomment</a>
+							</li>
+							<li>
+								<a href="../../pc4d/convenience.html" class=" module">convenience</a>
+							</li>
+							<li>
+								<a href="../../pc4d/expression.html" class=" module">expression</a>
+							</li>
+							<li>
+								<a href="../../pc4d/integer.html" class=" module">integer</a>
+							</li>
+							<li>
+								<a href="../../pc4d/killresults.html" class=" module">killresults</a>
+							</li>
+							<li>
+								<a href="../../pc4d/lazyparser.html" class=" module">lazyparser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/match.html" class=" module">match</a>
+							</li>
+							<li>
+								<a href="../../pc4d/number.html" class=" module">number</a>
+							</li>
+							<li>
+								<a href="../../pc4d/optional.html" class=" module">optional</a>
+							</li>
+							<li>
+								<a href="../../pc4d/parser.html" class="selected module">parser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/regexparser.html" class=" module">regexparser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/repetition.html" class=" module">repetition</a>
+							</li>
+							<li>
+								<a href="../../pc4d/sequence.html" class=" module">sequence</a>
+							</li>
+						</ul>
+							</li>
+							<li>
+								<a href="../../pc4d.html" class=" module">pc4d</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="../../symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>Class ParseResult</h1>
+			<section>
+				<p>Class for successfull parsing.
+ use <a href="../../pc4d/parser/ParseResult.fResults.html"><code class="prettyprint lang-d">fResults</code></a> to get to the <a href="../../pc4d/parser/ParseResult.results.html"><code class="prettyprint lang-d">results</code></a>.
+ use <a href="../../pc4d/parser/ParseResult.fRest.html"><code class="prettyprint lang-d">fRest</code></a> to get to the not consumed part of the input.
+</p>
+
+					<section>
+						<h3>Inherits from</h3>
+						<ul>
+							<li>
+								<code class="prettyprint lang-d">Object</code>
+ (base class)
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Constructors</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.this.html" class="public">
+										<code>this</code>
+									</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Fields</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.fMessage.html" class="public"><code>fMessage</code></a>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">string</code></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.fRest.html" class="public"><code>fRest</code></a>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">T[]</code></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.fResults.html" class="public"><code>fResults</code></a>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">Variant[]</code></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.fSuccess.html" class="public"><code>fSuccess</code></a>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">bool</code></td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Properties</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.message.html" class="public property"><code>message</code></a>
+									<span class="tableEntryAnnotation">[get]</span>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">string</code></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.rest.html" class="public property"><code>rest</code></a>
+									<span class="tableEntryAnnotation">[get]</span>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">T[]</code></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.rest.html" class="public property"><code>rest</code></a>
+									<span class="tableEntryAnnotation">[set]</span>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">T[]</code></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.results.html" class="public property"><code>results</code></a>
+									<span class="tableEntryAnnotation">[get]</span>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">Variant[]</code></td>
+								<td>the <code class="prettyprint lang-d">results</code>
+</td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.success.html" class="public property"><code>success</code></a>
+									<span class="tableEntryAnnotation">[get]</span>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d">bool</code></td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Methods</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.error.html" class="public">
+										<code>error</code>
+									</a>
+								</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/parser/ParseResult.ok.html" class="public">
+										<code>ok</code>
+									</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+
+			</section>
+			<section>
+				<h2>Authors</h2>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+
+			</section>
+			<section>
+				<h2>License</h2>
+
+			</section>
+		</div>
+	</body>
+</html>

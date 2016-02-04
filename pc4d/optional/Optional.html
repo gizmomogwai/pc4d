@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Class Optional</title>
+		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script>
+		<script type="text/javascript" src="../../prettify/prettify.js">/**/</script>
+		<script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="prettyPrint(); setupDdox();">
+		<nav id="main-nav">
+						<ul class="tree-view">
+							<li class=" tree-view">
+								<a href="#" class="package">pc4d</a>
+						<ul class="tree-view">
+							<li>
+								<a href="../../pc4d/alnumparser.html" class=" module">alnumparser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/alternative.html" class=" module">alternative</a>
+							</li>
+							<li>
+								<a href="../../pc4d/blockcomment.html" class=" module">blockcomment</a>
+							</li>
+							<li>
+								<a href="../../pc4d/convenience.html" class=" module">convenience</a>
+							</li>
+							<li>
+								<a href="../../pc4d/expression.html" class=" module">expression</a>
+							</li>
+							<li>
+								<a href="../../pc4d/integer.html" class=" module">integer</a>
+							</li>
+							<li>
+								<a href="../../pc4d/killresults.html" class=" module">killresults</a>
+							</li>
+							<li>
+								<a href="../../pc4d/lazyparser.html" class=" module">lazyparser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/match.html" class=" module">match</a>
+							</li>
+							<li>
+								<a href="../../pc4d/number.html" class=" module">number</a>
+							</li>
+							<li>
+								<a href="../../pc4d/optional.html" class="selected module">optional</a>
+							</li>
+							<li>
+								<a href="../../pc4d/parser.html" class=" module">parser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/regexparser.html" class=" module">regexparser</a>
+							</li>
+							<li>
+								<a href="../../pc4d/repetition.html" class=" module">repetition</a>
+							</li>
+							<li>
+								<a href="../../pc4d/sequence.html" class=" module">sequence</a>
+							</li>
+						</ul>
+							</li>
+							<li>
+								<a href="../../pc4d.html" class=" module">pc4d</a>
+							</li>
+						</ul>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<p>
+						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+					</p>
+	<ul id="symbolSearchResults" style="display: none"></ul>
+	<script type="application/javascript" src="../../symbols.js"></script>
+	<script type="application/javascript">
+var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();
+	</script>
+				</div>
+		</nav>
+		<div id="main-contents">
+			<h1>Class Optional</h1>
+			<section>
+				<p>class for matching something optional
+</p>
+
+					<section>
+						<h3>Inherits from</h3>
+						<ul>
+							<li>
+								<code class="prettyprint lang-d">Object</code>
+ (base class)
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Constructors</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/optional/Optional.this.html" class="public">
+										<code>this</code>
+									</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Fields</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Type</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/optional/Optional.fParser.html" class="public"><code>fParser</code></a>
+								</td>
+								<td class="typecol"><code class="prettyprint lang-d"><a href="../../pc4d/parser/Parser.html">Parser</a>!T</code></td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>Methods</h3>
+						<table>
+							<col class="caption"/>
+							<tr>
+								<th>Name</th>
+								<th>Description</th>
+							</tr>
+							<tr>
+								<td>
+									<a href="../../pc4d/optional/Optional.parse.html" class="public">
+										<code>parse</code>
+									</a>
+								</td>
+								<td></td>
+							</tr>
+						</table>
+					</section>
+<section><h3>Example</h3>
+<p>unittests to show the usage of OptionalParser and its dsl '-'
+</p>
+<pre class="code"><code class="prettyprint lang-d">auto abc = match("abc");
+auto opt = - abc;
+auto res = opt.parse("abc");
+assert(res.success);
+assert(res.results.length == 1);
+assert(res.results[0] == "abc");
+assert(res.rest.length == 0);
+
+</code></pre>
+</section>
+<section><h3>Example</h3>
+<p>unittest to show optional in action.
+</p>
+<pre class="code"><code class="prettyprint lang-d">auto abc = match("abc");
+auto opt = - abc;
+auto res = opt.parse("efg");
+auto withoutOptional = abc.parse("efg");
+assert(!withoutOptions.success);
+assert(res.success);
+assert(res.results.length == 0);
+assert(res.rest == "efg");
+
+</code></pre>
+</section>
+<section><h3>Example</h3>
+<p><a href="../../pc4d/optional/Optional.parse.html"><code class="prettyprint lang-d">parse</code></a> a number with or without sign
+</p>
+<pre class="code"><code class="prettyprint lang-d">auto sign = match("+");
+auto value = match("1");
+auto test = (- sign) ~ value;
+auto resWithSign = test.parse("+1");
+assert(resWithSign.success);
+assert(resWithSign.results.length == 2);
+auto resWithoutSign = test.parse("1");
+assert(resWithoutSign.success);
+
+</code></pre>
+</section>
+
+			</section>
+			<section>
+				<h2>Authors</h2>
+
+			</section>
+			<section>
+				<h2>Copyright</h2>
+
+			</section>
+			<section>
+				<h2>License</h2>
+
+			</section>
+		</div>
+	</body>
+</html>

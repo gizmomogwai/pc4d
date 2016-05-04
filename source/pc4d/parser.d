@@ -1,5 +1,5 @@
 /**
- * whats up.
+ * Base module.
  */
 module pc4d.parser;
 

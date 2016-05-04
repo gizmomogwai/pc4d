@@ -7,4 +7,6 @@ out
 ddox
 *.lst
 __*
-doc
+docs
+bin
+/pc4d

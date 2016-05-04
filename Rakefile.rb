@@ -15,3 +15,10 @@ end
 
 desc 'the default task'
 task :default => [:run]
+
+desc 'add git to docs'
+task :git_docs do
+  cd 'docs' do
+    sh 'git remote add origin git@github.com:gizmomogwai/pc4d.git'
+  end
+end

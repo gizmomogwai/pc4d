@@ -3,6 +3,7 @@ module pc4d.number;
 import pc4d.parser;
 import std.array;
 import pc4d.regexparser;
+static import std.conv;
 
 /// parser for parsing floats
 class Number : RegexParser {
@@ -10,10 +11,10 @@ class Number : RegexParser {
     super(r"[-+]?[0-9]*\.?[0-9]+") ^^ (Variant[] input) {
       auto output = appender!(Variant[])();
       foreach (Variant o ; input) {
-	string s = o.get!(string);
-	double h = std.conv.to!(double)(s);
-	Variant v = h;
-	output.put(v);
+        string s = o.get!(string);
+        double h = std.conv.to!(double)(s);
+        Variant v = h;
+        output.put(v);
       }
       return output.data;
     };

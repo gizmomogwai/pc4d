@@ -5,6 +5,7 @@ import pc4d.parser;
 /// parser for parsing ints
 static class Integer : RegexParser {
   this() {
+    static import std.conv;
     super(r"\d+") ^^ (input) { return variantArray(std.conv.to!(int)(input[0].get!(string))); };
   }
 }

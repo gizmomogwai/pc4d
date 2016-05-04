@@ -3,3 +3,16 @@ description "A parser combinator library."
 copyright "Copyright © 2015, gizmo"
 authors "gizmo"
 license "MIT"
+x:ddoxFilterArgs ""
+
+dependency "unit-threaded" version="*"
+
+configuration "application" {
+  targetType "library"
+}
+
+configuration "unittest" {
+  targetType "executable"
+  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f bin/ut.d"
+  mainSourceFile "bin/ut.d"
+}

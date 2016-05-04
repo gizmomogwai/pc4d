@@ -21,8 +21,7 @@ class Optional(T) : Parser!(T) {
   }
 }
 
-/// unittests to demonstrate the OptionalParser and its dsl '-'
-
+/// unittests to show the usage of OptionalParser and its dsl '-'
 unittest {
   auto abc = match("abc");
   auto opt = - abc;
@@ -33,24 +32,28 @@ unittest {
   assert(res.rest.length == 0);
 }
 
+/// unittest to show optional in action.
 unittest {
   auto abc = match("abc");
   auto opt = - abc;
   auto res = opt.parse("efg");
+  auto withoutOptional = abc.parse("efg");
+  assert(!withoutOptional.success);
   assert(res.success);
   assert(res.results.length == 0);
   assert(res.rest == "efg");
 }
 
+/// parse a number with or without sign
 unittest {
   auto sign = match("+");
   auto value = match("1");
-  auto test = -(sign ~ value);
-  auto res = test.parse("+1");
-  assert(res.success);
-  assert(res.results.length == 2);
-  res = test.parse("");
-  assert(res.success);
+  auto test = (- sign) ~ value;
+  auto resWithSign = test.parse("+1");
+  assert(resWithSign.success);
+  assert(resWithSign.results.length == 2);
+  auto resWithoutSign = test.parse("1");
+  assert(resWithoutSign.success);
 }
 
 

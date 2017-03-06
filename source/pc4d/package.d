@@ -1,9 +1,8 @@
 module pc4d;
 public {
-  import pc4d.alnumparser;
+  import pc4d.parsers.alnum;
   import pc4d.alternative;
   import pc4d.blockcomment;
-  import pc4d.convenience;
   import pc4d.expression;
   import pc4d.integer;
   import pc4d.killresults;

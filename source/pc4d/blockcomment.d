@@ -20,7 +20,7 @@ static class BlockCommentParser(T) : Parser!(T) {
     }
     for (int i=0; i<expected.length; i++) {
       if (slice[i] != expected[i]) {
-	return false;
+        return false;
       }
     }
     return true;
@@ -30,16 +30,16 @@ static class BlockCommentParser(T) : Parser!(T) {
     if (startsWith(s, 0, fStart)) {
       auto l = fStart.length;
       for (auto i=l; i<s.length; i++) {
-	if (startsWith(s, i, fEnd)) {
-	  auto lastIdx = i+fEnd.length;
-	  auto rest = s[lastIdx..$];
-	  if (fCollect) {
-	    auto matched = s[0..lastIdx];
-	    return transform(success(rest, matched));
-	  } else {
+        if (startsWith(s, i, fEnd)) {
+          auto lastIdx = i+fEnd.length;
+          auto rest = s[lastIdx..$];
+          if (fCollect) {
+            auto matched = s[0..lastIdx];
+            return transform(success(rest, matched));
+          } else {
             return success(rest);
-	  }
-	}
+          }
+        }
       }
       return ParseResult!(T).error("");
     } else {
@@ -53,18 +53,23 @@ Parser!(T) blockComment(T)(T[] startString, T[] endString, bool collect=true) {
   return new BlockCommentParser!(T)(startString, endString, collect);
 }
 
-/// unittests for blockcomment
+/// blockComment can collect the comment itself
 unittest {
+  import unit_threaded;
+
   auto parser = blockComment("/*", "*/", true);
   auto res = parser.parseAll("/*abc*/");
-  assert(res.success);
-  assert(res.fResults[0] == "/*abc*/");
+  res.success.shouldBeTrue;
+  res.fResults[0].shouldEqual("/*abc*/");
 }
 
+/// blockComment can also throw the comment away
 unittest {
+  import unit_threaded;
+
   auto parser = blockComment("/*", "*/", false);
   auto res = parser.parseAll("/*abc*/");
-  assert(res.success);
-  assert(res.fResults.length == 0);
+  res.success.shouldBeTrue;
+  res.fResults.length.shouldEqual(0);
 }
 

@@ -29,8 +29,9 @@ Parser!(T) number(T)() {
 
 /// unittests for number parser
 unittest {
+  import unit_threaded;
   auto parser = number!(immutable(char))();
   auto res = parser.parse("123.123");
-  assert(res.success);
-  assert(res.results[0] == 123.123);
+  res.success.shouldBeTrue;
+  res.results[0].shouldEqual(123.123);
 }

@@ -3,7 +3,7 @@
  */
 module pc4d.parser;
 
-public import pc4d.convenience;
+public import pc4d;
 import std.string;
 import std.stdio;
 import std.array;
@@ -94,9 +94,39 @@ class Parser(T) {
     }
   }
 
+  /// trying to parse all of the input
+  unittest {
+    import unit_threaded;
+
+    auto parser = match("test");
+    auto res = parser.parseAll("test");
+
+    res.success.shouldBeTrue;
+    res.rest.length.shouldEqual(0);
+
+    parser.parseAll("test1");
+    res.success.shouldBeFalse;
+  }
+
   /// this must be implemented by subclasses
   ParseResult!(T) parse(T[] s) {
     throw new Exception("must be implemented in childs");
+  }
+
+  /// trying to parse part of the input
+  unittest {
+    import unit_threaded;
+
+    auto parser = match("test");
+    auto res = parser.parse("test");
+
+    res.success.shouldBeTrue;
+    res.rest.length.shouldEqual(0);
+
+    parser.parse("test1");
+    res.success.shouldBeTrue;
+
+    res.rest.shouldEqual("1");
   }
 
   /// dsl for repetition of a parser e.g. (*match("a")) matches sequences of a
@@ -108,14 +138,38 @@ class Parser(T) {
     return new Optional!(T)(this);
   }
 
-  /// dsl for transforming results of a parser e.g. RegexParser("\d+") ^^ (input) { return variantArray(42); } returns always 42 if a number was parsed
+  /// dsl for transforming results of a parser
   Parser opBinary(string op)(Variant[] function(Variant[] objects) toCall) if (op == "^^") {
     return setCallback(toCall);
+  }
+
+  /// transforming from regexp string to integer
+  unittest {
+    import unit_threaded;
+    import std.conv;
+
+    auto res = (regexParser("\\d+") ^^ (input) { return variantArray( input[0].get!string.to!int); }).parse("123");
+    res.success.shouldBeTrue;
+    res.results[0].shouldEqual(123);
   }
 
   /// dsl for alternatives e.g. match("abc") | match("def") matches "abc" or "def"
   Parser opBinary(string op)(Parser rhs) if (op == "|") {
     return or(this, rhs);
+  }
+  /// the pc4d.alternative parser and its dsl '|'
+  unittest {
+    import unit_threaded;
+
+    auto parser = match("abc") | match("def");
+    auto res = parser.parse("abc");
+    res.success.shouldBeTrue;
+
+    res = parser.parse("def");
+    res.success.shouldBeTrue;
+
+    res = parser.parse("ghi");
+    res.success.shouldBeFalse;
   }
 
   /// dsl for sequences e.g. match("a") ~ match("b") matches "ab"
@@ -134,7 +188,7 @@ class Parser(T) {
   }
 
   ParseResult!(T) transform(ParseResult!(T) result) {
-    if (result.success()) {
+    if (result.success) {
       return fCallable ? ParseResult!(T).ok(result.rest, fCallable(result.results)) : result;
     } else {
       return result;

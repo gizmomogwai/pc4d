@@ -10,3 +10,5 @@ __*
 docs
 bin
 /pc4d
+/source/pc4d/index.d
+gen

@@ -4,7 +4,9 @@ import pc4d.parser;
 import std.array;
 import std.regex;
 
-/// parser for regular expressions
+/++ parser for regular expressions
+ + a successful parse step returns all captures in an array
+ +/
 class RegexParser : Parser!(immutable(char)) {
   string fRegex;
   bool fCollect;
@@ -21,14 +23,14 @@ class RegexParser : Parser!(immutable(char)) {
       return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
     } else {
       if (fCollect) {
-	auto results = appender!(Variant[])();
-	foreach (c; res.captures) {
-	  Variant v = c;
-	  results.put(v);
-	}
-	return transform(ParseResult!(immutable(char)).ok(res.post, results.data));
+        auto results = appender!(Variant[])();
+        foreach (c; res.captures) {
+          Variant v = c;
+          results.put(v);
+        }
+        return transform(ParseResult!(immutable(char)).ok(res.post, results.data));
       } else {
-	return success(res.post);
+        return success(res.post);
       }
     }
   }
@@ -39,26 +41,20 @@ Parser!(T) regexParser(T)(T[] s, bool collect=true) {
   return new RegexParser(s, collect);
 }
 
-/// unittests for RegexParser
+/// regexParser
 unittest {
-  auto res = regexParser("abc").parse("abcd");
-  assert(res.success);
-  assert(res.rest == "d");
+  import unit_threaded;
+
+  auto res = regexParser("(a)(.)(c)").parse("abcd");
+  res.success.shouldBeTrue;
+  res.results.shouldEqual(["abc", "a", "b", "c"]);
+  res.rest.shouldEqual("d");
 }
 
+/// regexParser works from the start of the input
 unittest {
+  import unit_threaded;
+
   auto res = regexParser("abc").parse("babc");
-  assert(!res.success);
-}
-
-unittest {
-  auto res = regexParser("(.)(.)(.)").parse("abc");
-  assert(res.success);
-  assert(res.results.length == 4);
-}
-
-unittest {
-  auto res = (regexParser("\\d+") ^^ (input) { return variantArray(123); }).parse("123");
-  assert(res.success);
-  assert(res.results[0] == 123);
+  res.success.shouldBeFalse;
 }

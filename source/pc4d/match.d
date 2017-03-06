@@ -18,7 +18,7 @@ class Matcher(T) : Parser!(T) {
     }
     for (int i=0; i<expected.length; i++) {
       if (aInput[i] != expected[i]) {
-	return false;
+        return false;
       }
     }
     return true;
@@ -28,9 +28,9 @@ class Matcher(T) : Parser!(T) {
     if (startsWith(s, fExpected)) {
       auto rest = s[fExpected.length..$];
       if (fCollect) {
-	return transform(success(rest, fExpected));
+        return transform(success(rest, fExpected));
       } else {
-	return success(rest);
+        return success(rest);
       }
     } else {
       return ParseResult!(T).error("");//"Expected: '" ~ fExpected ~ "' but got '" ~ s ~ "'");
@@ -44,34 +44,30 @@ Parser!(T) match(T)(T[] s, bool collect=true) {
   return new Matcher!(T)(s, collect);
 }
 
+/// matching a string
 unittest {
+  import unit_threaded;
+
   auto parser = match("test");
   auto res = parser.parseAll("test");
-  assert(res.success);
+
+  res.success.shouldBeTrue;
+  res.rest.length.shouldEqual(0);
 }
 
 unittest {
-  auto parser = match("test");
-  auto res = parser.parse("test");
-  assert(res.success);
-  assert(res.rest is null || res.rest.length == 0);
-}
+  import unit_threaded;
 
-unittest {
-  auto parser = match("test");
-  auto res = parser.parse("abc");
-  assert(!res.success);
-}
-
-unittest {
   auto parser = match("test");
   auto res = parser.parse("test2");
-  assert(res.success);
-  assert(res.rest == "2");
+  res.success.shouldBeTrue;
+  res.rest.shouldEqual("2");
+
   res = parser.parseAll("test2");
-  assert(!res.success);
+  res.success.shouldBeFalse;
 }
 
+/// transform match result
 unittest {
   auto parser = match("test") ^^ (objects) {
     auto res = objects;

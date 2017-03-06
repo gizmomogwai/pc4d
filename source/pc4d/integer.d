@@ -5,8 +5,8 @@ import pc4d.parser;
 /// parser for parsing ints
 static class Integer : RegexParser {
   this() {
-    static import std.conv;
-    super(r"\d+") ^^ (input) { return variantArray(std.conv.to!(int)(input[0].get!(string))); };
+    import std.conv;
+    super(r"\d+") ^^ (input) { return variantArray(input[0].get!string.to!int); };
   }
 }
 
@@ -17,8 +17,10 @@ Parser!(T) integer(T)() {
 
 /// unittests for integer
 unittest {
+  import unit_threaded;
+
   auto parser = integer!(immutable(char));
   auto res = parser.parse("123");
-  assert(res.success);
-  assert(res.results[0] == 123);
+  res.success.shouldBeTrue;
+  res.results[0].shouldEqual(123);
 }

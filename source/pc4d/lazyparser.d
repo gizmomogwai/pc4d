@@ -3,7 +3,10 @@ module pc4d.lazyparser;
 import pc4d.parser;
 import std.functional;
 
-/// this parser is needed to build recursive parser hierarchies
+/++
+ + this parser is needed to build recursive parser hierarchies.
+ + look for expression.d for a more realistic example than in the unittest
+ +/
 class LazyParser(T) : Parser!(T) {
   Parser!(T) delegate() fCallable;
 
@@ -28,28 +31,33 @@ class LazyParser(T) : Parser!(T) {
 Parser!(T) lazyParser(T)(Parser!(T) delegate() parser) {
   return new LazyParser!(T)(parser);
 }
+
 /// convenient function to instantiate a lazy parser with a function
 Parser!(T) lazyParser(T)(Parser!(T) function() parser) {
   return new LazyParser!(T)(parser);
 }
 
-/// unittest to show a simple usage of lazy
+/// unittest to show the simplest usage of lazy
 unittest {
-  class Endless {
-    // endless -> a | a opt(endless)
-    Parser!(immutable(char)) lazyEndless() {
-      return lazyParser!(immutable(char))(&endless);
-    }
+  import unit_threaded;
 
-    Parser!(immutable(char)) endless() {
+  // endless -> a | a opt(endless)
+  struct Endless {
+    static Parser!(immutable(char)) lazyEndless() {
+      return lazyParser!(immutable(char))(&parser);
+    }
+    static Parser!(immutable(char)) parser() {
       return match("a") ~ (-(lazyEndless()));
     }
   }
-  auto parser = new Endless;
-  auto p = parser.endless();
+
+  auto p = Endless.parser();
   auto res = p.parse("aa");
-  assert(res.success);
+  res.success.shouldBeTrue;
+  res.results.shouldEqual(["a", "a"]);
+
   res = p.parse("aab");
-  assert(res.success);
-  assert(res.rest == "b");
+  res.success.shouldBeTrue;
+  res.results.shouldEqual(["a", "a"]);
+  res.rest.shouldEqual("b");
 }

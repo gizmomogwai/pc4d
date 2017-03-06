@@ -5,21 +5,14 @@ import std.array;
 import std.conv;
 import std.functional;
 
-/// parser for parsing alphanumerical values starting with a letter or -
-class Alnum(T) : Regex {
-  this(bool collect=true) {
-    super(r"-?\w[\w\d]*", collect) ^^ (data) {
-      return variantArray(data[0]);
-    };
-  }
-}
-
 /// convenient function to instantiate a AlphaNumericParser
 auto alnum(T)(bool collect=true) {
-  return new Alnum!(T)(collect);
+  return new Regex(r"-?\w[\w\d]*", collect) ^^ (data) {
+    return variantArray(data[0]);
+  };
 }
 
-/// the pc4d.alnum parser
+/// the alnum parser
 unittest {
   import unit_threaded;
 

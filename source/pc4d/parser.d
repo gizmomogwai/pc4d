@@ -107,7 +107,7 @@ class Parser(T) {
     res.success.shouldBeTrue;
     res.rest.length.shouldEqual(0);
 
-    parser.parseAll("test1");
+    res = parser.parseAll("test1");
     res.success.shouldBeFalse;
   }
 
@@ -131,7 +131,7 @@ class Parser(T) {
     res.success.shouldBeTrue;
     res.rest.length.shouldEqual(0);
 
-    parser.parse("test1");
+    res = parser.parse("test1");
     res.success.shouldBeTrue;
 
     res.rest.shouldEqual("1");

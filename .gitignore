@@ -12,3 +12,4 @@ bin
 /pc4d
 /source/pc4d/index.d
 gen
+/libpc4d.a

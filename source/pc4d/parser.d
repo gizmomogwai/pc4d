@@ -115,7 +115,7 @@ class Parser(T) {
    + this must be implemented by subclasses
    + Params:
    +   input = the data to process
-   + Returns: ParseResult with success, result and rest or not success, message
+   + Returns: ParseResult with (success, result and rest) or (not success and optional error message)
    +/
   ParseResult!(T) parse(T[] input) {
     throw new Exception("must be implemented in childs");
@@ -141,6 +141,7 @@ class Parser(T) {
   Parser opUnary(string op)() if (op == "*") {
     return new Repetition!(T)(this);
   }
+
   /// dsl for optional parser e.g. (-match("abc")) matches "abc" and "efg"
   Parser opUnary(string op)() if (op == "-") {
     return new Optional!(T)(this);

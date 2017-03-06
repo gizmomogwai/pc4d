@@ -525,10 +525,10 @@ static class Repetition(T) : Parser!(T) {
     while (true) {
       auto res = fToRepeat.parse(rest);
       if (res.success) {
-  rest = res.rest;
-  results = results ~ res.results;
+        rest = res.rest;
+        results = results ~ res.results;
       } else {
-  break;
+        break;
       }
     }
     return transform(ParseResult!(T).ok(rest, results));
@@ -596,10 +596,10 @@ class Sequence(T) : Parser!(T) {
     foreach (parser; fParsers) {
       auto res = parser.parse(h);
       if (res.success) {
-  h = res.rest;
-  resultObjects.put(res.results);
+        h = res.rest;
+        resultObjects.put(res.results);
       } else {
-  return res;
+        return res;
       }
     }
     return transform(ParseResult!(T).ok(h, resultObjects.data));

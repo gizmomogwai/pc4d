@@ -16,4 +16,5 @@ configuration "unittest" {
   preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f gen/ut.d"
   mainSourceFile "gen/ut.d"
   excludedSourceFiles "source/app.d"
+  excludedSourceFiles "source/pc4d/index.d"
 }

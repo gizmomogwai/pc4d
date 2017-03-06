@@ -1,9 +1,8 @@
 /**
- * Base module.
+ * Module defining the base for all parser combinators.
  */
 module pc4d.parser;
 
-public import pc4d;
 import std.string;
 import std.stdio;
 import std.array;
@@ -12,9 +11,10 @@ import std.string;
 import std.conv;
 public import std.variant;
 import std.functional;
+import pc4d.parsers;
 
 /**
- * Class for successfull parsing.
+ * Result of a parsing step.
  * use fResults to get to the results.
  * use fRest to get to the not consumed part of the input.
  */
@@ -44,16 +44,17 @@ class ParseResult(T) {
     return res;
   }
 
+  /// errormessage
   @property string message() {
     return fMessage;
   }
 
-  ///
+  /// true if parsing was successfull
   @property bool success() {
     return fSuccess;
   }
 
-  ///
+  /// unconsumed input
   @property T[] rest() {
     return fRest;
   }
@@ -71,12 +72,14 @@ class ParseResult(T) {
   }
 }
 
-/** interface for all parser combinators
- * parse must be implemented
+/**
+ * interface for all parser combinators
+ * parse must be implemented.
  */
 class Parser(T) {
   Variant[] delegate(Variant[]) fCallable = null;
 
+  /// helper to create a successfull result
   static success(U...)(T[] rest, U args) {
     return ParseResult!(T).ok(rest, variantArray(args));
   }
@@ -108,8 +111,13 @@ class Parser(T) {
     res.success.shouldBeFalse;
   }
 
-  /// this must be implemented by subclasses
-  ParseResult!(T) parse(T[] s) {
+  /++
+   + this must be implemented by subclasses
+   + Params:
+   +   input = the data to process
+   + Returns: ParseResult with success, result and rest or not success, message
+   +/
+  ParseResult!(T) parse(T[] input) {
     throw new Exception("must be implemented in childs");
   }
 
@@ -148,7 +156,7 @@ class Parser(T) {
     import unit_threaded;
     import std.conv;
 
-    auto res = (regexParser("\\d+") ^^ (input) { return variantArray( input[0].get!string.to!int); }).parse("123");
+    auto res = (regex("\\d+") ^^ (input) { return variantArray( input[0].get!string.to!int); }).parse("123");
     res.success.shouldBeTrue;
     res.results[0].shouldEqual(123);
   }

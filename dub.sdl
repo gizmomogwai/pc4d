@@ -1,9 +1,7 @@
 name "pc4d"
 description "A parser combinator library."
-copyright "Copyright © 2015, gizmo"
-authors "gizmo"
+copyright "Copyright © 2015, Christian Köstlin"
 license "MIT"
-version "1.0.0"
 
 configuration "library" {
   targetType "library"
@@ -12,9 +10,14 @@ configuration "library" {
 configuration "unittest" {
   targetType "executable"
 
-  dependency "unit-threaded" version="==0.7.4"
-  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f gen/ut.d"
-  mainSourceFile "gen/ut.d"
+  dependency "unit-threaded" version="~>0.7.36"
+  preBuildCommands "dub run unit-threaded -c gen_ut_main -- -f out/generated/unit-threaded/testsuite.d"
+  mainSourceFile "out/generated/unit-threaded/testsuite.d"
   excludedSourceFiles "source/app.d"
   excludedSourceFiles "source/pc4d/index.d"
 }
+
+x:ddoxFilterArgs "--min-protection=Private"
+sourcePaths "source" "out/generated/packageversion"
+importPaths "source" "out/generated/packageversion"
+preGenerateCommands "dub run packageversion -- --packageName=pc4d"

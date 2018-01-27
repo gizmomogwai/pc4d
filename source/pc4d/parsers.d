@@ -1,3 +1,9 @@
+/++
+ + Copyright: Copyright © 2015, Christian Köstlin
+ + License: MIT
+ + Authors: Christian Koestlin, Christian Köstlin
+ +/
+
 module pc4d.parsers;
 
 import pc4d.parser;
@@ -6,14 +12,16 @@ import std.conv;
 import std.functional;
 
 /// convenient function to instantiate a AlphaNumericParser
-auto alnum(T)(bool collect=true) {
+auto alnum(T)(bool collect = true)
+{
   return new Regex(r"-?\w[\w\d]*", collect) ^^ (data) {
     return variantArray(data[0]);
   };
 }
 
 /// the alnum parser
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = alnum!(immutable(char))();
@@ -25,17 +33,22 @@ unittest {
 }
 
 /// class for matching alternatives
-class Alternative(T) : Parser!(T) {
+class Alternative(T) : Parser!(T)
+{
   Parser!(T)[] fParsers;
 
-  this(Parser!(T)[] parsers ...) {
+  this(Parser!(T)[] parsers...)
+  {
     fParsers = parsers.dup;
   }
 
-  override ParseResult!(T) parse(T[] s) {
-    foreach (parser; fParsers) {
+  override ParseResult!(T) parse(T[] s)
+  {
+    foreach (parser; fParsers)
+    {
       auto res = parser.parse(s);
-      if (res.success) {
+      if (res.success)
+      {
         return transform(res);
       }
     }
@@ -44,12 +57,14 @@ class Alternative(T) : Parser!(T) {
 }
 
 /// convenient function
-Parser!(T) or(T)(Parser!(T)[] parsers...) {
+Parser!(T) or(T)(Parser!(T)[] parsers...)
+{
   return new Alternative!(T)(parsers);
 }
 
 /// showing off the or dsl
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = or(match("a"), match("b"), match("c"));
@@ -59,58 +74,75 @@ unittest {
 }
 
 /// parser for blockcomments
-static class BlockComment(T) : Parser!(T) {
+static class BlockComment(T) : Parser!(T)
+{
   T[] fStart;
   T[] fEnd;
   bool fCollect;
-  this(T[] startString, T[] endString, bool collect=true) {
+  this(T[] startString, T[] endString, bool collect = true)
+  {
     fStart = startString;
     fEnd = endString;
     fCollect = collect;
   }
 
-  bool startsWith(T[] aInput, ulong startIdx, T[] expected) {
-    T[] slice = aInput[startIdx..$];
-    if (slice.length < expected.length) {
+  bool startsWith(T[] aInput, ulong startIdx, T[] expected)
+  {
+    T[] slice = aInput[startIdx .. $];
+    if (slice.length < expected.length)
+    {
       return false;
     }
-    for (int i=0; i<expected.length; i++) {
-      if (slice[i] != expected[i]) {
+    for (int i = 0; i < expected.length; i++)
+    {
+      if (slice[i] != expected[i])
+      {
         return false;
       }
     }
     return true;
   }
 
-  override ParseResult!(T) parse(T[] s) {
-    if (startsWith(s, 0, fStart)) {
+  override ParseResult!(T) parse(T[] s)
+  {
+    if (startsWith(s, 0, fStart))
+    {
       auto l = fStart.length;
-      for (auto i=l; i<s.length; i++) {
-        if (startsWith(s, i, fEnd)) {
-          auto lastIdx = i+fEnd.length;
-          auto rest = s[lastIdx..$];
-          if (fCollect) {
-            auto matched = s[0..lastIdx];
+      for (auto i = l; i < s.length; i++)
+      {
+        if (startsWith(s, i, fEnd))
+        {
+          auto lastIdx = i + fEnd.length;
+          auto rest = s[lastIdx .. $];
+          if (fCollect)
+          {
+            auto matched = s[0 .. lastIdx];
             return transform(success(rest, matched));
-          } else {
+          }
+          else
+          {
             return success(rest);
           }
         }
       }
       return ParseResult!(T).error("");
-    } else {
+    }
+    else
+    {
       return ParseResult!(T).error("");
     }
   }
 }
 
 /// convenient function
-Parser!(T) blockComment(T)(T[] startString, T[] endString, bool collect=true) {
+Parser!(T) blockComment(T)(T[] startString, T[] endString, bool collect = true)
+{
   return new BlockComment!(T)(startString, endString, collect);
 }
 
 /// blockComment can collect the comment itself
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = blockComment("/*", "*/", true);
@@ -120,7 +152,8 @@ unittest {
 }
 
 /// blockComment can also throw the comment away
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = blockComment("/*", "*/", false);
@@ -134,30 +167,39 @@ unittest {
  + term -> factor { * factor }
  + factor -> number | ( expr )
  +/
-static class ExprParser {
-  Parser!(immutable(char)) lazyExpr() {
-    return lazyParser( &expr );
+static class ExprParser
+{
+  Parser!(immutable(char)) lazyExpr()
+  {
+    return lazyParser(&expr);
   }
-  Parser!(immutable(char)) expr() {
+
+  Parser!(immutable(char)) expr()
+  {
     auto add = (term() ~ match("+", false) ~ term()) ^^ (input) {
-      return variantArray(input[0]+input[1]);
+      return variantArray(input[0] + input[1]);
     };
     return add | term();
   }
-  Parser!(immutable(char)) term() {
+
+  Parser!(immutable(char)) term()
+  {
     auto mult = (factor() ~ match("*", false) ~ factor()) ^^ (input) {
-      return variantArray(input[0]*input[1]);
+      return variantArray(input[0] * input[1]);
     };
     return mult | factor();
   }
-  Parser!(immutable(char)) factor() {
+
+  Parser!(immutable(char)) factor()
+  {
     auto exprWithParens = match("(", false) ~ lazyExpr() ~ match(")", false);
     return number!(immutable(char))() | exprWithParens;
   }
 }
 
 /// a simple expression parser
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = new ExprParser;
@@ -171,22 +213,26 @@ unittest {
   res.results[0].get!double.shouldEqual(9);
 }
 
-
 /// parser for parsing ints
-static class Integer : Regex {
-  this() {
+static class Integer : Regex
+{
+  this()
+  {
     import std.conv;
+
     super(r"\d+") ^^ (input) { return variantArray(input[0].get!string.to!int); };
   }
 }
 
 /// convenience function to create an integer parser
-Parser!(T) integer(T)() {
+Parser!(T) integer(T)()
+{
   return new Integer;
 }
 
 /// unittests for integer
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = integer!(immutable(char));
@@ -200,15 +246,14 @@ unittest {
  + another parser e.g. killResults(match("a")) succeeds, but returns
  + an empty result
  +/
-Parser!(T) killResults(T)(Parser!(T) parser) {
-  return parser ^^ (Variant[] input) {
-    Variant[] res;
-    return res;
-  };
+Parser!(T) killResults(T)(Parser!(T) parser)
+{
+  return parser ^^ (Variant[] input) { Variant[] res; return res; };
 }
 
 /// unittests for kill results
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto res = killResults(match("a")).parse("a");
@@ -216,25 +261,28 @@ unittest {
   res.results.length.shouldEqual(0);
 }
 
-
 /++
  + this parser is needed to build recursive parser hierarchies.
  + look for expression.d for a more realistic example than in the unittest
  +/
-class Lazy(T) : Parser!(T) {
+class Lazy(T) : Parser!(T)
+{
   Parser!(T) delegate() fCallable;
 
-  this(Parser!(T) delegate() parser) {
+  this(Parser!(T) delegate() parser)
+  {
     assert(parser != null);
     fCallable = parser;
   }
 
-  this(Parser!(T) function() parser) {
+  this(Parser!(T) function() parser)
+  {
     assert(parser != null);
     fCallable = toDelegate(parser);
   }
 
-  override ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s)
+  {
     auto parser = fCallable();
     return transform(parser.parse(s));
   }
@@ -242,25 +290,32 @@ class Lazy(T) : Parser!(T) {
 }
 
 /// convenient function to instantiate a lazy parser with a delegate
-Parser!(T) lazyParser(T)(Parser!(T) delegate() parser) {
+Parser!(T) lazyParser(T)(Parser!(T) delegate() parser)
+{
   return new Lazy!(T)(parser);
 }
 
 /// convenient function to instantiate a lazy parser with a function
-Parser!(T) lazyParser(T)(Parser!(T) function() parser) {
+Parser!(T) lazyParser(T)(Parser!(T) function() parser)
+{
   return new Lazy!(T)(parser);
 }
 
 /// unittest to show the simplest usage of lazy
-unittest {
+unittest
+{
   import unit_threaded;
 
   // endless -> a | a opt(endless)
-  struct Endless {
-    static Parser!(immutable(char)) lazyEndless() {
+  struct Endless
+  {
+    static Parser!(immutable(char)) lazyEndless()
+    {
       return lazyParser!(immutable(char))(&parser);
     }
-    static Parser!(immutable(char)) parser() {
+
+    static Parser!(immutable(char)) parser()
+    {
       return match("a") ~ (-(lazyEndless()));
     }
   }
@@ -276,51 +331,63 @@ unittest {
   res.rest.shouldEqual("b");
 }
 
-
-
 /// class for matching an array exactly
-class Match(T) : Parser!(T) {
+class Match(T) : Parser!(T)
+{
   T[] fExpected;
   bool fCollect;
-  this(T[] expected, bool collect=true) {
+  this(T[] expected, bool collect = true)
+  {
     fExpected = expected;
     fCollect = collect;
   }
 
-  bool startsWith(T[] aInput, T[] expected) {
-    if (aInput.length < expected.length) {
+  bool startsWith(T[] aInput, T[] expected)
+  {
+    if (aInput.length < expected.length)
+    {
       return false;
     }
-    for (int i=0; i<expected.length; i++) {
-      if (aInput[i] != expected[i]) {
+    for (int i = 0; i < expected.length; i++)
+    {
+      if (aInput[i] != expected[i])
+      {
         return false;
       }
     }
     return true;
   }
 
-  override ParseResult!(T) parse(T[] s) {
-    if (startsWith(s, fExpected)) {
-      auto rest = s[fExpected.length..$];
-      if (fCollect) {
+  override ParseResult!(T) parse(T[] s)
+  {
+    if (startsWith(s, fExpected))
+    {
+      auto rest = s[fExpected.length .. $];
+      if (fCollect)
+      {
         return transform(success(rest, fExpected));
-      } else {
+      }
+      else
+      {
         return success(rest);
       }
-    } else {
-      return ParseResult!(T).error("");//"Expected: '" ~ fExpected ~ "' but got '" ~ s ~ "'");
+    }
+    else
+    {
+      return ParseResult!(T).error(""); //"Expected: '" ~ fExpected ~ "' but got '" ~ s ~ "'");
     }
   }
 }
 
-
 /// convenient function to instantiate a matcher
-Parser!(T) match(T)(T[] s, bool collect=true) {
+Parser!(T) match(T)(T[] s, bool collect = true)
+{
   return new Match!(T)(s, collect);
 }
 
 /// matching a string
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = match("test");
@@ -330,7 +397,8 @@ unittest {
   res.rest.length.shouldEqual(0);
 }
 
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = match("test");
@@ -343,10 +411,12 @@ unittest {
 }
 
 /// transform match result
-unittest {
+unittest
+{
   auto parser = match("test") ^^ (objects) {
     auto res = objects;
-    if (objects[0] == "test") {
+    if (objects[0] == "test")
+    {
       res[0] = "super";
     }
     return objects;
@@ -356,14 +426,16 @@ unittest {
   assert(res.results[0] == "super");
 }
 
-unittest {
+unittest
+{
   auto parser = match("test", false);
   auto res = parser.parseAll("test");
   assert(res.success);
   assert(res.results.length == 0);
 }
 
-unittest {
+unittest
+{
   auto parser = match([1, 2, 3]);
   auto res = parser.parseAll([1, 2, 3]);
   assert(res.success);
@@ -372,10 +444,12 @@ unittest {
 }
 
 /// convenient function to instantiate a number parser
-Parser!(T) number(T)() {
+Parser!(T) number(T)()
+{
   return new Regex(r"[-+]?[0-9]*\.?[0-9]+") ^^ (Variant[] input) {
     auto output = appender!(Variant[])();
-    foreach (Variant o ; input) {
+    foreach (Variant o; input)
+    {
       string s = o.get!(string);
       double h = std.conv.to!(double)(s);
       Variant v = h;
@@ -386,7 +460,8 @@ Parser!(T) number(T)() {
 }
 
 /// unittests for number parser
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto parser = number!(immutable(char))();
@@ -396,27 +471,34 @@ unittest {
 }
 
 /// class for matching something optional
-class Optional(T) : Parser!(T) {
+class Optional(T) : Parser!(T)
+{
   Parser!(T) fParser;
 
-  this(Parser!(T) parser) {
+  this(Parser!(T) parser)
+  {
     fParser = parser;
   }
 
-  override ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s)
+  {
     auto res = fParser.parse(s);
-    if (!res.success) {
+    if (!res.success)
+    {
       return success(s);
-    } else {
+    }
+    else
+    {
       return res;
     }
   }
 }
 
 /// unittests to show the usage of OptionalParser and its dsl '-'
-unittest {
+unittest
+{
   auto abc = match("abc");
-  auto opt = - abc;
+  auto opt = -abc;
   auto res = opt.parse("abc");
   assert(res.success);
   assert(res.results.length == 1);
@@ -425,9 +507,10 @@ unittest {
 }
 
 /// unittest to show optional in action.
-unittest {
+unittest
+{
   auto abc = match("abc");
-  auto opt = - abc;
+  auto opt = -abc;
   auto res = opt.parse("efg");
   auto withoutOptional = abc.parse("efg");
   assert(!withoutOptional.success);
@@ -437,10 +520,11 @@ unittest {
 }
 
 /// parse a number with or without sign
-unittest {
+unittest
+{
   auto sign = match("+");
   auto value = match("1");
-  auto test = (- sign) ~ value;
+  auto test = (-sign) ~ value;
   auto resWithSign = test.parse("+1");
   assert(resWithSign.success);
   assert(resWithSign.results.length == 2);
@@ -452,30 +536,43 @@ unittest {
  + parser for regular expressions
  + a successful parse step returns all captures in an array
  +/
-class Regex : Parser!(immutable(char)) {
+class Regex : Parser!(immutable(char))
+{
   string fRegex;
   bool fCollect;
-  this(string regex, bool collect=true) {
+  this(string regex, bool collect = true)
+  {
     fRegex = regex;
     fCollect = collect;
   }
 
-  override ParseResult!(immutable(char)) parse(string s) {
+  override ParseResult!(immutable(char)) parse(string s)
+  {
     import std.regex;
+
     auto res = std.regex.match(s, std.regex.regex(fRegex));
-    if (res.empty()) {
+    if (res.empty())
+    {
       return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
-    } else if (res.pre.length > 0) {
+    }
+    else if (res.pre.length > 0)
+    {
       return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
-    } else {
-      if (fCollect) {
+    }
+    else
+    {
+      if (fCollect)
+      {
         auto results = appender!(Variant[])();
-        foreach (c; res.captures) {
+        foreach (c; res.captures)
+        {
           Variant v = c;
           results.put(v);
         }
         return transform(ParseResult!(immutable(char)).ok(res.post, results.data));
-      } else {
+      }
+      else
+      {
         return success(res.post);
       }
     }
@@ -483,12 +580,14 @@ class Regex : Parser!(immutable(char)) {
 }
 
 /// convenient function to instantiate a regexparser
-Parser!(T) regex(T)(T[] s, bool collect=true) {
+Parser!(T) regex(T)(T[] s, bool collect = true)
+{
   return new Regex(s, collect);
 }
 
 /// regexParser
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto res = regex("(a)(.)(c)").parse("abcd");
@@ -498,7 +597,8 @@ unittest {
 }
 
 /// regexParser works from the start of the input
-unittest {
+unittest
+{
   import unit_threaded;
 
   auto res = regex("abc").parse("babc");
@@ -506,21 +606,28 @@ unittest {
 }
 
 /// class for matching repetitions
-static class Repetition(T) : Parser!(T) {
+static class Repetition(T) : Parser!(T)
+{
   Parser!(T) fToRepeat;
-  this(Parser!(T) toRepeat) {
+  this(Parser!(T) toRepeat)
+  {
     fToRepeat = toRepeat;
   }
 
-  override ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s)
+  {
     Variant[] results;
     auto rest = s;
-    while (true) {
+    while (true)
+    {
       auto res = fToRepeat.parse(rest);
-      if (res.success) {
+      if (res.success)
+      {
         rest = res.rest;
         results = results ~ res.results;
-      } else {
+      }
+      else
+      {
         break;
       }
     }
@@ -529,7 +636,8 @@ static class Repetition(T) : Parser!(T) {
 }
 
 /// unittest for repetition
-unittest {
+unittest
+{
   auto parser = *match("a");
   auto res = parser.parse("aa");
   assert(res.success);
@@ -537,28 +645,32 @@ unittest {
   assert(res.results.length == 2);
 }
 
-unittest {
+unittest
+{
   auto parser = *match("a");
   auto res = parser.parse("b");
   assert(res.success);
   assert(res.rest == "b");
 }
 
-unittest {
+unittest
+{
   auto parser = *match("a");
   auto res = parser.parse("ab");
   assert(res.success);
   assert(res.rest == "b");
 }
 
-unittest {
+unittest
+{
   auto parser = *(match("+") ~ match("-"));
   auto res = parser.parse("+-+-+");
   assert(res.success);
   assert(res.rest == "+");
 }
 
-unittest {
+unittest
+{
   auto parser = *match("a", false);
   auto res = parser.parse("aaaa");
   assert(res.success);
@@ -566,10 +678,9 @@ unittest {
   assert(res.results.length == 0);
 }
 
-unittest {
-  auto parser = (*match("a")) ^^ (input) {
-    return variantArray(input.length);
-  };
+unittest
+{
+  auto parser = (*match("a")) ^^ (input) { return variantArray(input.length); };
   auto suc = parser.parseAll("aaaaa");
   assert(suc.success);
   assert(suc.results.length == 1);
@@ -577,21 +688,28 @@ unittest {
 }
 
 /// class for matching sequences
-class Sequence(T) : Parser!(T) {
+class Sequence(T) : Parser!(T)
+{
   Parser!(T)[] fParsers;
-  this(Parser!(T)[] parsers ...) {
+  this(Parser!(T)[] parsers...)
+  {
     fParsers = parsers.dup;
   }
 
-  override ParseResult!(T) parse(T[] s) {
+  override ParseResult!(T) parse(T[] s)
+  {
     auto resultObjects = appender!(Variant[])();
     T[] h = s;
-    foreach (parser; fParsers) {
+    foreach (parser; fParsers)
+    {
       auto res = parser.parse(h);
-      if (res.success) {
+      if (res.success)
+      {
         h = res.rest;
         resultObjects.put(res.results);
-      } else {
+      }
+      else
+      {
         return res;
       }
     }
@@ -600,32 +718,37 @@ class Sequence(T) : Parser!(T) {
 }
 
 /// convenient function
-Parser!(T) sequence(T)(Parser!(T)[] parsers...) {
+Parser!(T) sequence(T)(Parser!(T)[] parsers...)
+{
   return new Sequence!(T)(parsers);
 }
 
 /// unittests showing usage of sequence parser and dsl '~'
-unittest {
+unittest
+{
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("ab");
   assert(res.success);
   assert(res.results.length == 2);
 }
 
-unittest {
+unittest
+{
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("abc");
   assert(res.success);
   assert(res.rest == "c");
 }
 
-unittest {
+unittest
+{
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("ac");
   assert(!res.success);
 }
 
-unittest {
+unittest
+{
   auto parser = match("a") ~ match("b");
   auto res = parser.parse("ab");
   assert(res.success);
@@ -633,18 +756,21 @@ unittest {
   assert(!res.success);
 }
 
-
-unittest {
+unittest
+{
   auto parser = match("a", false) ~ match("b");
   auto res = parser.parse("ab");
   assert(res.success);
 }
 
-unittest {
+unittest
+{
   auto parser = (match("a") ~ match("b")) ^^ (Variant[] result) {
     string totalString;
-    foreach (Variant o ; result) {
-      if (o.type == typeid(string)) {
+    foreach (Variant o; result)
+    {
+      if (o.type == typeid(string))
+      {
         totalString ~= o.get!(string);
       }
     }
@@ -659,7 +785,8 @@ unittest {
   assert(suc.results[0] == "ab");
 }
 
-unittest {
+unittest
+{
   auto ab = -match("a") ~ match("b");
   auto res = ab.parse("ab");
   assert(res.success);
@@ -671,13 +798,15 @@ unittest {
   assert(!res.success);
 }
 
-unittest {
+unittest
+{
   auto ab = sequence(match("a"), match("b"));
   auto res = ab.parse("ab");
   assert(res.success);
 }
 
-unittest {
+unittest
+{
   auto ab = sequence(match("a"), match("b"), match("c"));
   auto res = ab.parse("abc");
   assert(res.success);

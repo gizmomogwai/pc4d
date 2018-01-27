@@ -1,71 +1,86 @@
-/**
- * Module defining the base for all parser combinators.
- */
+/++
+ + Module defining the base for all parser combinators.
+ +
+ + Copyright: Copyright © 2015, Christian Köstlin
+ + License: MIT
+ + Authors: Christian Koestlin, Christian Köstlin
+ +/
 module pc4d.parser;
 
-import std.string;
-import std.stdio;
+public import std.variant;
+
+import pc4d.parsers;
 import std.array;
 import std.ascii;
-import std.string;
 import std.conv;
-public import std.variant;
 import std.functional;
-import pc4d.parsers;
+import std.stdio;
+import std.string;
+import std.string;
 
 /**
  * Result of a parsing step.
  * use fResults to get to the results.
  * use fRest to get to the not consumed part of the input.
  */
-class ParseResult(T) {
+class ParseResult(T)
+{
   T[] fRest;
   Variant[] fResults;
   string fMessage;
   bool fSuccess;
 
-  private this(bool success) {
+  private this(bool success)
+  {
     fRest = null;
     fResults = null;
     fMessage = null;
     fSuccess = success;
   }
 
-  public static ParseResult!(T) ok(T[] rest, Variant[] results) {
+  public static ParseResult!(T) ok(T[] rest, Variant[] results)
+  {
     auto res = new ParseResult!(T)(true);
     res.fRest = rest;
     res.fResults = results;
     return res;
   }
 
-  public static ParseResult!(T) error(string message) {
+  public static ParseResult!(T) error(string message)
+  {
     auto res = new ParseResult!(T)(false);
     res.fMessage = message;
     return res;
   }
 
   /// errormessage
-  @property string message() {
+  @property string message()
+  {
     return fMessage;
   }
 
   /// true if parsing was successfull
-  @property bool success() {
+  @property bool success()
+  {
     return fSuccess;
   }
 
   /// unconsumed input
-  @property T[] rest() {
+  @property T[] rest()
+  {
     return fRest;
   }
 
-  @property T[] rest(T[] rest) {
+  @property T[] rest(T[] rest)
+  {
     return fRest = rest;
   }
 
   /// the results
-  @property Variant[] results() {
-    if (!success) {
+  @property Variant[] results()
+  {
+    if (!success)
+    {
       throw new Exception("no results available");
     }
     return fResults;
@@ -76,29 +91,39 @@ class ParseResult(T) {
  * interface for all parser combinators
  * parse must be implemented.
  */
-class Parser(T) {
-  Variant[] delegate(Variant[]) fCallable = null;
+class Parser(T)
+{
+  Variant[]delegate(Variant[]) fCallable = null;
 
   /// helper to create a successfull result
-  static success(U...)(T[] rest, U args) {
+  static success(U...)(T[] rest, U args)
+  {
     return ParseResult!(T).ok(rest, variantArray(args));
   }
 
-  ParseResult!(T) parseAll(T[] s) {
+  ParseResult!(T) parseAll(T[] s)
+  {
     auto res = parse(s);
-    if (res.success) {
-      if ((res.rest is null) || (res.rest.length == 0)) {
+    if (res.success)
+    {
+      if ((res.rest is null) || (res.rest.length == 0))
+      {
         return res;
-      } else {
-        return ParseResult!(T).error("string not completely consumed"/*, res.rest*/);
       }
-    } else {
+      else
+      {
+        return ParseResult!(T).error("string not completely consumed" /*, res.rest*/ );
+      }
+    }
+    else
+    {
       return res;
     }
   }
 
   /// trying to parse all of the input
-  unittest {
+  unittest
+  {
     import unit_threaded;
 
     auto parser = match("test");
@@ -117,12 +142,14 @@ class Parser(T) {
    +   input = the data to process
    + Returns: ParseResult with (success, result and rest) or (not success and optional error message)
    +/
-  ParseResult!(T) parse(T[] input) {
+  ParseResult!(T) parse(T[] input)
+  {
     throw new Exception("must be implemented in childs");
   }
 
   /// trying to parse part of the input
-  unittest {
+  unittest
+  {
     import unit_threaded;
 
     auto parser = match("test");
@@ -138,36 +165,45 @@ class Parser(T) {
   }
 
   /// dsl for repetition of a parser e.g. (*match("a")) matches sequences of a
-  Parser opUnary(string op)() if (op == "*") {
+  Parser opUnary(string op)() if (op == "*")
+  {
     return new Repetition!(T)(this);
   }
 
   /// dsl for optional parser e.g. (-match("abc")) matches "abc" and "efg"
-  Parser opUnary(string op)() if (op == "-") {
+  Parser opUnary(string op)() if (op == "-")
+  {
     return new Optional!(T)(this);
   }
 
   /// dsl for transforming results of a parser
-  Parser opBinary(string op)(Variant[] function(Variant[] objects) toCall) if (op == "^^") {
+  Parser opBinary(string op)(Variant[]function(Variant[] objects) toCall)
+      if (op == "^^")
+  {
     return setCallback(toCall);
   }
 
   /// transforming from regexp string to integer
-  unittest {
+  unittest
+  {
     import unit_threaded;
     import std.conv;
 
-    auto res = (regex("\\d+") ^^ (input) { return variantArray( input[0].get!string.to!int); }).parse("123");
+    auto res = (regex("\\d+") ^^ (input) {
+      return variantArray(input[0].get!string.to!int);
+    }).parse("123");
     res.success.shouldBeTrue;
     res.results[0].shouldEqual(123);
   }
 
   /// dsl for alternatives e.g. match("abc") | match("def") matches "abc" or "def"
-  Parser opBinary(string op)(Parser rhs) if (op == "|") {
+  Parser opBinary(string op)(Parser rhs) if (op == "|")
+  {
     return or(this, rhs);
   }
   /// the pc4d.alternative parser and its dsl '|'
-  unittest {
+  unittest
+  {
     import unit_threaded;
 
     auto parser = match("abc") | match("def");
@@ -182,24 +218,31 @@ class Parser(T) {
   }
 
   /// dsl for sequences e.g. match("a") ~ match("b") matches "ab"
-  Parser opBinary(string op)(Parser rhs) if (op == "~") {
+  Parser opBinary(string op)(Parser rhs) if (op == "~")
+  {
     return sequence(this, rhs);
   }
 
-  Parser setCallback(Variant[] function(Variant[] objects) tocall) {
+  Parser setCallback(Variant[]function(Variant[] objects) tocall)
+  {
     fCallable = toDelegate(tocall);
     return this;
   }
 
-  Parser setCallback(Variant[] delegate(Variant[] objects) tocall) {
+  Parser setCallback(Variant[]delegate(Variant[] objects) tocall)
+  {
     fCallable = tocall;
     return this;
   }
 
-  ParseResult!(T) transform(ParseResult!(T) result) {
-    if (result.success) {
+  ParseResult!(T) transform(ParseResult!(T) result)
+  {
+    if (result.success)
+    {
       return fCallable ? ParseResult!(T).ok(result.rest, fCallable(result.results)) : result;
-    } else {
+    }
+    else
+    {
       return result;
     }
   }

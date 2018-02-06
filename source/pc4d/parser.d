@@ -122,7 +122,7 @@ class Parser(T)
     }
 
     /// trying to parse all of the input
-    unittest
+    @("parseAll") unittest
     {
         import unit_threaded;
 
@@ -148,7 +148,7 @@ class Parser(T)
     }
 
     /// trying to parse part of the input
-    unittest
+    @("parse") unittest
     {
         import unit_threaded;
 
@@ -184,7 +184,7 @@ class Parser(T)
     }
 
     /// transforming from regexp string to integer
-    unittest
+    @("regexp to integer") unittest
     {
         import unit_threaded;
         import std.conv;
@@ -202,7 +202,7 @@ class Parser(T)
         return or(this, rhs);
     }
     /// the pc4d.alternative parser and its dsl '|'
-    unittest
+    @("alternative dsl") unittest
     {
         import unit_threaded;
 

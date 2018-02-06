@@ -415,6 +415,8 @@ Parser!(T) match(T)(T[] s, bool collect = true)
 /// transform match result
 @("match + transform") unittest
 {
+    import unit_threaded;
+
     auto parser = match("test") ^^ (objects) {
         auto res = objects;
         if (objects[0] == "test")
@@ -424,25 +426,29 @@ Parser!(T) match(T)(T[] s, bool collect = true)
         return objects;
     };
     auto res = parser.parse("test");
-    assert(res.success);
-    assert(res.results[0] == "super");
+    res.success.shouldBeTrue;
+    res.results[0].shouldEqual("super");
 }
 
 @("match - discard") unittest
 {
+    import unit_threaded;
+
     auto parser = match("test", false);
     auto res = parser.parseAll("test");
-    assert(res.success);
-    assert(res.results.length == 0);
+    res.success.shouldBeTrue;
+    res.results.length.shouldEqual(0);
 }
 
 @("match on arrays") unittest
 {
+    import unit_threaded;
+
     auto parser = match([1, 2, 3]);
     auto res = parser.parseAll([1, 2, 3]);
-    assert(res.success);
-    assert(res.results.length == 1);
-    assert(res.results[0] == [1, 2, 3]);
+    res.success.shouldBeTrue;
+    res.results.length.shouldEqual(1);
+    res.results[0].shouldEqual([1, 2, 3]);
 }
 
 /// convenient function to instantiate a number parser
@@ -499,39 +505,45 @@ class Optional(T) : Parser!(T)
 /// unittests to show the usage of OptionalParser and its dsl '-'
 @("optional and dsl") unittest
 {
+    import unit_threaded;
+
     auto abc = match("abc");
     auto opt = -abc;
     auto res = opt.parse("abc");
-    assert(res.success);
-    assert(res.results.length == 1);
-    assert(res.results[0] == "abc");
-    assert(res.rest.length == 0);
+    res.success.shouldBeTrue;
+    res.results.length.shouldEqual(1);
+    res.results[0].shouldEqual("abc");
+    res.rest.length.shouldEqual(0);
 }
 
 /// unittest to show optional in action.
 @("optional") unittest
 {
+    import unit_threaded;
+
     auto abc = match("abc");
     auto opt = -abc;
     auto res = opt.parse("efg");
     auto withoutOptional = abc.parse("efg");
-    assert(!withoutOptional.success);
-    assert(res.success);
-    assert(res.results.length == 0);
-    assert(res.rest == "efg");
+    withoutOptional.success.shouldBeFalse;
+    res.success.shouldBeTrue;
+    res.results.length.shouldEqual(0);
+    res.rest.shouldEqual("efg");
 }
 
 /// parse a number with or without sign
 @("parse number with or without +") unittest
 {
+    import unit_threaded;
+
     auto sign = match("+");
     auto value = match("1");
     auto test = (-sign) ~ value;
     auto resWithSign = test.parse("+1");
-    assert(resWithSign.success);
-    assert(resWithSign.results.length == 2);
+    resWithSign.success.shouldBeTrue;
+    resWithSign.results.length.shouldEqual(2);
     auto resWithoutSign = test.parse("1");
-    assert(resWithoutSign.success);
+    resWithoutSign.success.shouldBeTrue;
 }
 
 /++
@@ -640,53 +652,65 @@ static class Repetition(T) : Parser!(T)
 /// unittest for repetition
 @("repetition more than one") unittest
 {
+    import unit_threaded;
+
     auto parser = *match("a");
     auto res = parser.parse("aa");
-    assert(res.success);
-    assert(res.rest == "");
-    assert(res.results.length == 2);
+    res.success.shouldBeTrue;
+    res.rest.shouldEqual("");
+    res.results.length.shouldEqual(2);
 }
 
 @("repetition none") unittest
 {
+    import unit_threaded;
+
     auto parser = *match("a");
     auto res = parser.parse("b");
-    assert(res.success);
-    assert(res.rest == "b");
+    res.success.shouldBeTrue;
+    res.rest.shouldEqual("b");
 }
 
 @("repetition with rest") unittest
 {
+    import unit_threaded;
+
     auto parser = *match("a");
     auto res = parser.parse("ab");
-    assert(res.success);
-    assert(res.rest == "b");
+    res.success.shouldBeTrue;
+    res.rest.shouldEqual("b");
 }
 
 @("repetition with other parser") unittest
 {
+    import unit_threaded;
+
     auto parser = *(match("+") ~ match("-"));
     auto res = parser.parse("+-+-+");
-    assert(res.success);
-    assert(res.rest == "+");
+    res.success.shouldBeTrue;
+    res.rest.shouldEqual("+");
 }
 
 @("repetition discarding result") unittest
 {
+    import unit_threaded;
+
     auto parser = *match("a", false);
     auto res = parser.parse("aaaa");
-    assert(res.success);
-    assert(res.rest.length == 0);
-    assert(res.results.length == 0);
+    res.success.shouldBeTrue;
+    res.rest.length.shouldEqual(0);
+    res.results.length.shouldEqual(0);
 }
 
 @("repetition transforming result") unittest
 {
+    import unit_threaded;
+
     auto parser = (*match("a")) ^^ (input) { return variantArray(input.length); };
     auto suc = parser.parseAll("aaaaa");
-    assert(suc.success);
-    assert(suc.results.length == 1);
-    assert(suc.results[0].get!(ulong) == 5);
+    suc.success.shouldBeTrue;
+    suc.results.length.shouldEqual(1);
+    suc.results[0].get!(ulong).shouldEqual(5);
 }
 
 /// class for matching sequences
@@ -728,25 +752,32 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 /// unittests showing usage of sequence parser and dsl '~'
 @("sequence") unittest
 {
+    import unit_threaded;
+
     auto parser = match("a") ~ match("b");
     auto res = parser.parse("ab");
-    assert(res.success);
-    assert(res.results.length == 2);
+    res.success.shouldBeTrue;
+    res.results.length.shouldEqual(2);
 }
 
 @("sequence and rest") unittest
 {
-    auto parser = match("a") ~ match("b");
+    import unit_threaded;
+
+    auto parser = match("a") ~ "b".match;
     auto res = parser.parse("abc");
-    assert(res.success);
-    assert(res.rest == "c");
+    res.success.shouldBeTrue;
+    res.rest.shouldEqual("c");
 }
 
 @("sequence fails") unittest
 {
+    import unit_threaded;
+
     auto parser = match("a") ~ match("b");
     auto res = parser.parse("ac");
-    assert(!res.success);
+
+    res.success.shouldBeFalse;
 }
 
 @("sequence with discard result") unittest

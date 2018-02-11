@@ -5,119 +5,98 @@
 		<title>Variable ParseResult.fSuccess</title>
 		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
 		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
-		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script>
-		<script type="text/javascript" src="../../prettify/prettify.js">/**/</script>
-		<script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
 	</head>
-	<body onload="prettyPrint(); setupDdox();">
+	<body onload="setupDdox();">
 		<nav id="main-nav">
-						<ul class="tree-view">
-							<li class=" tree-view">
-								<a href="#" class="package">pc4d</a>
-						<ul class="tree-view">
-							<li>
-								<a href="../../pc4d/alnumparser.html" class=" module">alnumparser</a>
-							</li>
-							<li>
-								<a href="../../pc4d/alternative.html" class=" module">alternative</a>
-							</li>
-							<li>
-								<a href="../../pc4d/blockcomment.html" class=" module">blockcomment</a>
-							</li>
-							<li>
-								<a href="../../pc4d/convenience.html" class=" module">convenience</a>
-							</li>
-							<li>
-								<a href="../../pc4d/expression.html" class=" module">expression</a>
-							</li>
-							<li>
-								<a href="../../pc4d/integer.html" class=" module">integer</a>
-							</li>
-							<li>
-								<a href="../../pc4d/killresults.html" class=" module">killresults</a>
-							</li>
-							<li>
-								<a href="../../pc4d/lazyparser.html" class=" module">lazyparser</a>
-							</li>
-							<li>
-								<a href="../../pc4d/match.html" class=" module">match</a>
-							</li>
-							<li>
-								<a href="../../pc4d/number.html" class=" module">number</a>
-							</li>
-							<li>
-								<a href="../../pc4d/optional.html" class=" module">optional</a>
-							</li>
-							<li>
-								<a href="../../pc4d/parser.html" class="selected module">parser</a>
-							</li>
-							<li>
-								<a href="../../pc4d/regexparser.html" class=" module">regexparser</a>
-							</li>
-							<li>
-								<a href="../../pc4d/repetition.html" class=" module">repetition</a>
-							</li>
-							<li>
-								<a href="../../pc4d/sequence.html" class=" module">sequence</a>
-							</li>
-						</ul>
-							</li>
-							<li>
-								<a href="../../pc4d.html" class=" module">pc4d</a>
-							</li>
-						</ul>
-				<noscript>
-					<p style="color: red">The search functionality needs JavaScript enabled</p>
-				</noscript>
-				<div id="symbolSearchPane" style="display: none">
-					<p>
-						<input id="symbolSearch" type="text" placeholder="Search for symbols" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
-					</p>
-	<ul id="symbolSearchResults" style="display: none"></ul>
-	<script type="application/javascript" src="../../symbols.js"></script>
-	<script type="application/javascript">
-var symbolSearchRootDir = "../../";
-$('#symbolSearchPane').show();
-	</script>
-				</div>
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();</script>
+			</div>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../pc4d.html">pc4d</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/packageversion.html">packageversion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../../pc4d/parser.html">parser</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/parsers.html">parsers</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>Variable ParseResult.fSuccess</h1>
-			<section>
-				<p></p>
+			<h1>Variable ParseResult.fSuccess</h1><p></p>
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<span class="kwd">class</span> <a href="../../pc4d/parser/ParseResult.html"><span class="typ">ParseResult</span></a>
+			<br/>
+			<span class="pun">
+				{
+				<br/>
+			</span>
+			&nbsp;&nbsp;<span class="com">// ...</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">bool</span> <span class="pln">fSuccess</span>
+			<span class="pun">;</span>
+			<br/>
+			&nbsp;&nbsp;<span class="com">// ...</span>
+			<br/>
+			<span class="pun">}</span>
+					</div>
+				</code>
+			</div>
+			
+			
+			<footer>
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Christian Koestlin, Christian Köstlin
+</p>
 
-					<section>
-						<h3>Declaration</h3>
-						<div class="prototype">
-							<code class="prettyprint lang-d">
-class <a href="../../pc4d/parser/ParseResult.html">ParseResult</a>
-								<br/>
-{
-								<br/>
-&nbsp;&nbsp;// ...
-								<br/>
-&nbsp;&nbsp;bool fSuccess;
-								<br/>
-&nbsp;&nbsp;// ...
-								<br/>
-}
-							</code>
-						</div>
-					</section>
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Copyright © 2015, Christian Köstlin
+</p>
 
-			</section>
-			<section>
-				<h2>Authors</h2>
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p>MIT
+</p>
 
-			</section>
-			<section>
-				<h2>Copyright</h2>
-
-			</section>
-			<section>
-				<h2>License</h2>
-
-			</section>
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
+			</footer>
 		</div>
 	</body>
 </html>

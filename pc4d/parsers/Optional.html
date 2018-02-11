@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Class Optional</title>
+		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="setupDdox();">
+		<nav id="main-nav">
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();</script>
+			</div>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../pc4d.html">pc4d</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/packageversion.html">packageversion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/parser.html">parser</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../../pc4d/parsers.html">parsers</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+		</nav>
+		<div id="main-contents">
+			<h1>Class Optional</h1><p>class for matching something optional
+</p>
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<span class="kwd">class</span> <span class="typ">Optional</span>(T)
+			<span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<section><h2>Constructors</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Optional.this.html" class="public">
+								<code>this</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Optional.fParser.html" class="public"><code>fParser</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../pc4d/parser/Parser.html"><span class="typ">Parser</span></a>!T</code></td><td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Methods</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Optional.parse.html" class="public">
+								<code>parse</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Example</h2>
+<p>unittests to show the usage of OptionalParser and its dsl '-'
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">unit_threaded</span><span class="pun">;
+
+</span><span class="kwd">auto </span><span class="pln">abc </span><span class="pun">= <a href="../../pc4d/parsers/match.html"></span><span class="pln">match</span></a><span class="pun">(</span><span class="str">"abc"</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">opt </span><span class="pun">= -</span><span class="pln">abc</span><span class="pun">;
+</span><span class="kwd">auto </span><span class="pln">res </span><span class="pun">= </span><span class="pln">opt<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"abc"</span><span class="pun">);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeTrue</span><span class="pun">;
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">results<wbr/></span><span class="pun">.</span><span class="pln">length<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">results</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]<wbr/>.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="str">"abc"</span><span class="pun">);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">rest<wbr/></span><span class="pun">.</span><span class="pln">length<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="lit">0</span><span class="pun">);
+</span></code></pre>
+</section>
+<section><h2>Example</h2>
+<p>unittest to show optional in action.
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">unit_threaded</span><span class="pun">;
+
+</span><span class="kwd">auto </span><span class="pln">abc </span><span class="pun">= <a href="../../pc4d/parsers/match.html"></span><span class="pln">match</span></a><span class="pun">(</span><span class="str">"abc"</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">opt </span><span class="pun">= -</span><span class="pln">abc</span><span class="pun">;
+</span><span class="kwd">auto </span><span class="pln">res </span><span class="pun">= </span><span class="pln">opt<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"efg"</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">withoutOptional </span><span class="pun">= </span><span class="pln">abc<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"efg"</span><span class="pun">);
+</span><span class="pln">withoutOptional<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeFalse</span><span class="pun">;
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeTrue</span><span class="pun">;
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">results<wbr/></span><span class="pun">.</span><span class="pln">length<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="lit">0</span><span class="pun">);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">rest<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="str">"efg"</span><span class="pun">);
+</span></code></pre>
+</section>
+<section><h2>Example</h2>
+<p>parse a number with or without sign
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">unit_threaded</span><span class="pun">;
+
+</span><span class="kwd">auto </span><span class="pln">sign </span><span class="pun">= <a href="../../pc4d/parsers/match.html"></span><span class="pln">match</span></a><span class="pun">(</span><span class="str">"+"</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">value </span><span class="pun">= <a href="../../pc4d/parsers/match.html"></span><span class="pln">match</span></a><span class="pun">(</span><span class="str">"1"</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">test </span><span class="pun">= (-</span><span class="pln">sign</span><span class="pun">) ~ </span><span class="pln">value</span><span class="pun">;
+</span><span class="kwd">auto </span><span class="pln">resWithSign </span><span class="pun">= </span><span class="pln">test<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"+1"</span><span class="pun">);
+</span><span class="pln">resWithSign<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeTrue</span><span class="pun">;
+</span><span class="pln">resWithSign<wbr/></span><span class="pun">.</span><span class="pln">results<wbr/></span><span class="pun">.</span><span class="pln">length<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="lit">2</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">resWithoutSign </span><span class="pun">= </span><span class="pln">test<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"1"</span><span class="pun">);
+</span><span class="pln">resWithoutSign<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeTrue</span><span class="pun">;
+</span></code></pre>
+</section>
+
+			<footer>
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Christian Koestlin, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Copyright © 2015, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p>MIT
+</p>
+
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Class Regex</title>
+		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="setupDdox();">
+		<nav id="main-nav">
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();</script>
+			</div>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../pc4d.html">pc4d</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/packageversion.html">packageversion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/parser.html">parser</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../../pc4d/parsers.html">parsers</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+		</nav>
+		<div id="main-contents">
+			<h1>Class Regex</h1><p>parser for regular expressions
+ a successful parse step returns all captures in an array
+</p>
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<span class="kwd">class</span> <span class="typ">Regex</span>
+			<br>&nbsp;&nbsp;: <a href="../../pc4d/parser/Parser.html"><span class="typ">Parser</span></a>!(immutable(char))
+			<span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<section><h2>Constructors</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Regex.this.html" class="public">
+								<code>this</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Regex.fCollect.html" class="public"><code>fCollect</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Regex.fRegex.html" class="public"><code>fRegex</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.fCallable.html" class="public inherited"><code>fCallable</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">Variant</span><span class="pun">[]</span> <span class="kwd">delegate</span><span class="pun">(</span><span class="typ">Variant</span><span class="pun">[]</span><span class="pun">)</span></code></td><td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Methods</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parsers/Regex.parse.html" class="public">
+								<code>parse</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.opBinary.html" class="public inherited">
+								<code>opBinary</code>
+							</a>
+						</td>
+						<td>dsl for transforming results of a parser
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.opBinary.html" class="public inherited">
+								<code>opBinary</code>
+							</a>
+						</td>
+						<td>dsl for alternatives e.g. match("abc") | match("def") matches "abc" or "def"
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.opUnary.html" class="public inherited">
+								<code>opUnary</code>
+							</a>
+						</td>
+						<td>dsl for repetition of a parser e.g. (*match("a")) matches sequences of a
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.parse.html" class="public inherited">
+								<code>parse</code>
+							</a>
+						</td>
+						<td>this must be implemented by subclasses
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.parseAll.html" class="public inherited">
+								<code>parseAll</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.setCallback.html" class="public inherited">
+								<code>setCallback</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.setCallback.html" class="public inherited">
+								<code>setCallback</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.success.html" class="public inherited">
+								<code>success</code>
+							</a>
+						</td>
+						<td>helper to create a successfull result
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../pc4d/parser/Parser.transform.html" class="public inherited">
+								<code>transform</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			
+			<footer>
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Christian Koestlin, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Copyright © 2015, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p>MIT
+</p>
+
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
+			</footer>
+		</div>
+	</body>
+</html>

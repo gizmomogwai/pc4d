@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Module pc4d.parsers</title>
+		<link rel="stylesheet" type="text/css" href="../styles/ddox.css"/>
+		<link rel="stylesheet" href="../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../scripts/jquery.js">/**/</script><script type="text/javascript" src="../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="setupDdox();">
+		<nav id="main-nav">
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../";
+$('#symbolSearchPane').show();</script>
+			</div>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../pc4d.html">pc4d</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../pc4d/packageversion.html">packageversion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../pc4d/parser.html">parser</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../pc4d/parsers.html">parsers</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+		</nav>
+		<div id="main-contents">
+			<h1>Module pc4d.parsers</h1><p></p>
+			<section></section>
+			<section>
+				<h2>Functions</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="alnum" class="public" href="../pc4d/parsers/alnum.html">alnum</a><span class="decoration">(collect)</span>
+							</code>
+						</td>
+						<td>convenient function to instantiate a AlphaNumericParser
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="blockComment" class="public" href="../pc4d/parsers/blockComment.html">blockComment</a><span class="decoration">(startString, endString, collect)</span>
+							</code>
+						</td>
+						<td>convenient function
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="integer" class="public" href="../pc4d/parsers/integer.html">integer</a><span class="decoration">()</span>
+							</code>
+						</td>
+						<td>convenience function to create an integer parser
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="killResults" class="public" href="../pc4d/parsers/killResults.html">killResults</a><span class="decoration">(parser)</span>
+							</code>
+						</td>
+						<td>convenient function to build a parser that kills the result of
+ another parser e.g. killResults(match("a")) succeeds, but returns
+ an empty result
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="lazyParser" class="public" href="../pc4d/parsers/lazyParser.html">lazyParser</a><span class="decoration">(parser)</span>
+							</code>
+						</td>
+						<td>convenient function to instantiate a lazy parser with a delegate
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="lazyParser" class="public" href="../pc4d/parsers/lazyParser.html">lazyParser</a><span class="decoration">(parser)</span>
+							</code>
+						</td>
+						<td>convenient function to instantiate a lazy parser with a function
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="match" class="public" href="../pc4d/parsers/match.html">match</a><span class="decoration">(s, collect)</span>
+							</code>
+						</td>
+						<td>convenient function to instantiate a matcher
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="number" class="public" href="../pc4d/parsers/number.html">number</a><span class="decoration">()</span>
+							</code>
+						</td>
+						<td>convenient function to instantiate a number parser
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="or" class="public" href="../pc4d/parsers/or.html">or</a><span class="decoration">()</span>
+							</code>
+						</td>
+						<td>convenient function
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="regex" class="public" href="../pc4d/parsers/regex.html">regex</a><span class="decoration">(s, collect)</span>
+							</code>
+						</td>
+						<td>convenient function to instantiate a regexparser
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="sequence" class="public" href="../pc4d/parsers/sequence.html">sequence</a><span class="decoration">()</span>
+							</code>
+						</td>
+						<td>convenient function
+</td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Classes</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Alternative" class="public" href="../pc4d/parsers/Alternative.html">Alternative</a>
+							</code>
+						</td>
+						<td>class for matching alternatives
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="BlockComment" class="public" href="../pc4d/parsers/BlockComment.html">BlockComment</a>
+							</code>
+						</td>
+						<td>parser for blockcomments
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="ExprParser" class="public" href="../pc4d/parsers/ExprParser.html">ExprParser</a>
+							</code>
+						</td>
+						<td>example of an expression parser.
+ expr -&gt; term { + term }
+ term -&gt; factor { * factor }
+ factor -&gt; number | ( expr )
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Integer" class="public" href="../pc4d/parsers/Integer.html">Integer</a>
+							</code>
+						</td>
+						<td>parser for parsing ints
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Lazy" class="public" href="../pc4d/parsers/Lazy.html">Lazy</a>
+							</code>
+						</td>
+						<td>this parser is needed to build recursive parser hierarchies.
+ look for expression.d for a more realistic example than in the unittest
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Match" class="public" href="../pc4d/parsers/Match.html">Match</a>
+							</code>
+						</td>
+						<td>class for matching an array exactly
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Optional" class="public" href="../pc4d/parsers/Optional.html">Optional</a>
+							</code>
+						</td>
+						<td>class for matching something optional
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Regex" class="public" href="../pc4d/parsers/Regex.html">Regex</a>
+							</code>
+						</td>
+						<td>parser for regular expressions
+ a successful parse step returns all captures in an array
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Repetition" class="public" href="../pc4d/parsers/Repetition.html">Repetition</a>
+							</code>
+						</td>
+						<td>class for matching repetitions
+</td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Sequence" class="public" href="../pc4d/parsers/Sequence.html">Sequence</a>
+							</code>
+						</td>
+						<td>class for matching sequences
+</td>
+					</tr>
+				</table>
+			</section>
+			<footer>
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Christian Koestlin, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Copyright © 2015, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p>MIT
+</p>
+
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
+			</footer>
+		</div>
+	</body>
+</html>

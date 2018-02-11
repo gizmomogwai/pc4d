@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>lazyParser - multiple declarations</title>
+		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
+	</head>
+	<body onload="setupDdox();">
+		<nav id="main-nav">
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();</script>
+			</div>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../pc4d.html">pc4d</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/packageversion.html">packageversion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../pc4d/parser.html">parser</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../../pc4d/parsers.html">parsers</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+		</nav>
+		<div id="main-contents">
+			<h1>lazyParser - multiple declarations</h1>
+			<nav class="page-nav">
+				<ul>
+					<li>
+						<a href="#0">
+							Function <code>lazyParser</code>
+						</a>
+					</li>
+					<li>
+						<a href="#1">
+							Function <code>lazyParser</code>
+						</a>
+					</li>
+				</ul>
+			</nav><h2 id="0">Function lazyParser</h2><p>convenient function to instantiate a lazy parser with a delegate
+</p>
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<a href="../../pc4d/parser/Parser.html"><span class="typ">Parser</span></a>!T <span class="pln">lazyParser</span>(T)
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<a href="../../pc4d/parser/Parser.html"><span class="typ">Parser</span></a>!T <span class="kwd">delegate</span><span class="pun">(</span><span class="pun">)</span> <span class="pln">parser</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<h2 id="1">Function lazyParser</h2><p>convenient function to instantiate a lazy parser with a function
+</p>
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<a href="../../pc4d/parser/Parser.html"><span class="typ">Parser</span></a>!T <span class="pln">lazyParser</span>(T)
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<a href="../../pc4d/parser/Parser.html"><span class="typ">Parser</span></a>!T <span class="kwd">function</span><span class="pun">(</span><span class="pun">)</span> <span class="pln">parser</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<section><h3>Example</h3>
+<p>unittest to show the simplest usage of lazy
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">unit_threaded</span><span class="pun">;
+
+</span><span class="com">// endless -&gt; a | a opt(endless)
+</span><span class="kwd">struct </span><span class="typ">Endless
+</span><span class="pun">{
+    </span><span class="kwd">static </span><span class="typ">Parser</span><span class="pun">!(</span><span class="kwd">immutable</span><span class="pun">(</span><span class="typ">char</span><span class="pun">)) </span><span class="pln">lazyEndless</span><span class="pun">()
+    {
+        </span><span class="kwd">return <a href="../../pc4d/parsers/lazyParser.html"></span><span class="pln">lazyParser</span></a><span class="pun">!(</span><span class="kwd">immutable</span><span class="pun">(</span><span class="typ">char</span><span class="pun">))(&amp;<a href="../../pc4d/parsers/lazyParser.html#parser"></span><span class="pln">parser</span></a><span class="pun">);
+    }
+
+    </span><span class="kwd">static </span><span class="typ">Parser</span><span class="pun">!(</span><span class="kwd">immutable</span><span class="pun">(</span><span class="typ">char</span><span class="pun">)) <a href="../../pc4d/parsers/lazyParser.html#parser"></span><span class="pln">parser</span></a><span class="pun">()
+    {
+        </span><span class="kwd">return <a href="../../pc4d/parsers/match.html"></span><span class="pln">match</span></a><span class="pun">(</span><span class="str">"a"</span><span class="pun">) ~ (-(</span><span class="pln">lazyEndless</span><span class="pun">()));
+    }
+}
+
+</span><span class="kwd">auto </span><span class="pln">p </span><span class="pun">= </span><span class="typ">Endless<wbr/></span><span class="pun">.</span><span class="pln">parser</span><span class="pun">();
+</span><span class="kwd">auto </span><span class="pln">res </span><span class="pun">= </span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"aa"</span><span class="pun">);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeTrue</span><span class="pun">;
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">results<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">([</span><span class="str">"a"</span><span class="pun">, </span><span class="str">"a"</span><span class="pun">]);
+
+</span><span class="pln">res </span><span class="pun">= </span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">parse</span><span class="pun">(</span><span class="str">"aab"</span><span class="pun">);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">success<wbr/></span><span class="pun">.</span><span class="pln">shouldBeTrue</span><span class="pun">;
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">results<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">([</span><span class="str">"a"</span><span class="pun">, </span><span class="str">"a"</span><span class="pun">]);
+</span><span class="pln">res<wbr/></span><span class="pun">.</span><span class="pln">rest<wbr/></span><span class="pun">.</span><span class="pln">shouldEqual</span><span class="pun">(</span><span class="str">"b"</span><span class="pun">);
+</span></code></pre>
+</section>
+
+			<footer>
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Christian Koestlin, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Copyright © 2015, Christian Köstlin
+</p>
+
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p>MIT
+</p>
+
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
+			</footer>
+		</div>
+	</body>
+</html>

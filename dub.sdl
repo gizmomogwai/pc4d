@@ -3,8 +3,15 @@ description "A parser combinator library."
 copyright "Copyright © 2015, Christian Köstlin"
 license "MIT"
 
-dependency "packageversion" version="~>0.0.12"
+x:ddoxFilterArgs "--min-protection=Private"
+
+dependency "packageversion" version="~>0.0.15"
 subConfiguration "packageversion" "library"
+
+preBuildCommands "dub run packageversion -- --packageName=pc4d"
+sourceFiles "out/generated/packageversion/pc4d/packageversion.d"
+sourcePaths "source" "out/generated/packageversion"
+importPaths "source" "out/generated/packageversion"
 
 configuration "library" {
   targetType "library"
@@ -20,8 +27,3 @@ configuration "unittest" {
   mainSourceFile "out/generated/unit-threaded/testsuite.d"
   excludedSourceFiles "source/app.d"
 }
-
-x:ddoxFilterArgs "--min-protection=Private"
-sourcePaths "source" "out/generated/packageversion"
-importPaths "source" "out/generated/packageversion"
-preGenerateCommands "dub run packageversion -- --packageName=pc4d"

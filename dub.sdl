@@ -8,7 +8,7 @@ x:ddoxFilterArgs "--min-protection=Private"
 dependency "packageversion" version="~>0.0.15"
 subConfiguration "packageversion" "library"
 
-preBuildCommands "dub run packageversion -- --packageName=pc4d"
+preBuildCommands "packageversion --packageName=pc4d || dub run packageversion -- --packageName=pc4d"
 sourceFiles "out/generated/packageversion/pc4d/packageversion.d"
 sourcePaths "source" "out/generated/packageversion"
 importPaths "source" "out/generated/packageversion"

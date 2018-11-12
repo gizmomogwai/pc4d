@@ -5,12 +5,10 @@ license "MIT"
 
 x:ddoxFilterArgs "--min-protection=Private"
 
-dependency "packageversion" version="~>0.0.15"
-subConfiguration "packageversion" "library"
-
 preGenerateCommands "packageversion || dub run packageversion"
 sourcePaths "source" "out/generated/packageversion"
 importPaths "source" "out/generated/packageversion"
+dependency "packageversion" version="~>0.0.15"
 
 configuration "library" {
   targetType "library"

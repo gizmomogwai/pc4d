@@ -6,9 +6,12 @@ license "MIT"
 x:ddoxFilterArgs "--min-protection=Private"
 
 preGenerateCommands "packageversion || dub run packageversion"
+sourceFiles "out/generated/packageversion/pc4d/packageversion.d"
 sourcePaths "source" "out/generated/packageversion"
 importPaths "source" "out/generated/packageversion"
+
 dependency "packageversion" version="~>0.0.18"
+dependency "colored" version="~>0.0.19"
 
 configuration "library" {
   targetType "library"

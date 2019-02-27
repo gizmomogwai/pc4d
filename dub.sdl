@@ -1,6 +1,7 @@
 name "pc4d"
 description "A parser combinator library."
-copyright "Copyright © 2015, Christian Köstlin"
+authors "Christian Koestlin"
+copyright "Copyright (c) 2015, Christian Koestlin"
 license "MIT"
 
 x:ddoxFilterArgs "--min-protection=Private"

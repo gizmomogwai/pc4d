@@ -6,6 +6,8 @@
 
 module pc4d.parsers;
 
+version (unittest) import unit_threaded;
+
 import pc4d.parser;
 import std.array;
 import std.conv;
@@ -22,14 +24,12 @@ auto alnum(T)(bool collect = true)
 /// the alnum parser
 @("alnum parser") unittest
 {
-    import unit_threaded;
-
     auto parser = alnum!(immutable(char))();
     auto res = parser.parseAll("-Aa1234");
-    res.success.shouldBeTrue;
-    res.results[0].shouldEqual("-Aa1234");
+    res.success.should == true;
+    res.results[0].should == "-Aa1234";
     res = parser.parseAll("a1234");
-    res.success.shouldBeTrue;
+    res.success.should == true;
 }
 
 /// class for matching alternatives
@@ -65,12 +65,10 @@ Parser!(T) or(T)(Parser!(T)[] parsers...)
 /// showing off the or dsl
 @("or dsl") unittest
 {
-    import unit_threaded;
-
     auto parser = or(match("a"), match("b"), match("c"));
-    parser.parse("a").success.shouldBeTrue;
-    parser.parse("b").success.shouldBeTrue;
-    parser.parse("c").success.shouldBeTrue;
+    parser.parse("a").success.should == true;
+    parser.parse("b").success.should == true;
+    parser.parse("c").success.should == true;
 }
 
 /// parser for blockcomments
@@ -143,23 +141,19 @@ Parser!(T) blockComment(T)(T[] startString, T[] endString, bool collect = true)
 /// blockComment can collect the comment itself
 @("block comment - catch comment") unittest
 {
-    import unit_threaded;
-
     auto parser = blockComment("/*", "*/", true);
     auto res = parser.parseAll("/*abc*/");
-    res.success.shouldBeTrue;
-    res.fResults[0].shouldEqual("/*abc*/");
+    res.success.should == true;
+    res.fResults[0].should == "/*abc*/";
 }
 
 /// blockComment can also throw the comment away
 @("block comment - discard comment") unittest
 {
-    import unit_threaded;
-
     auto parser = blockComment("/*", "*/", false);
     auto res = parser.parseAll("/*abc*/");
-    res.success.shouldBeTrue;
-    res.fResults.length.shouldEqual(0);
+    res.success.should == true;
+    res.fResults.length.should == 0;
 }
 
 /++ example of an expression parser.
@@ -200,17 +194,15 @@ static class ExprParser
 /// a simple expression parser
 @("expression example") unittest
 {
-    import unit_threaded;
-
     auto parser = new ExprParser;
     auto p = parser.expr();
     auto res = p.parse("1+2*3");
-    res.success.shouldBeTrue;
-    res.results[0].get!double.shouldEqual(7);
+    res.success.should == true;
+    res.results[0].get!double.should == 7;
 
     res = p.parse("(1+2)*3");
-    res.success.shouldBeTrue;
-    res.results[0].get!double.shouldEqual(9);
+    res.success.should == true;
+    res.results[0].get!double.should == 9;
 }
 
 /// parser for parsing ints
@@ -221,7 +213,8 @@ static class Integer : Regex
         import std.conv;
 
         super(r"\d+") ^^ (input) {
-            return variantArray(input[0].get!string.to!int);
+            return variantArray(input[0].get!string
+                    .to!int);
         };
     }
 }
@@ -235,12 +228,10 @@ Parser!(T) integer(T)()
 /// unittests for integer
 @("integer") unittest
 {
-    import unit_threaded;
-
     auto parser = integer!(immutable(char));
     auto res = parser.parse("123");
-    res.success.shouldBeTrue;
-    res.results[0].shouldEqual(123);
+    res.success.should == true;
+    res.results[0].should == 123;
 }
 
 /++
@@ -256,11 +247,9 @@ Parser!(T) killResults(T)(Parser!(T) parser)
 /// unittests for kill results
 @("killResults") unittest
 {
-    import unit_threaded;
-
     auto res = killResults(match("a")).parse("a");
-    res.success.shouldBeTrue;
-    res.results.length.shouldEqual(0);
+    res.success.should == true;
+    res.results.length.should == 0;
 }
 
 /++
@@ -306,8 +295,6 @@ Parser!(T) lazyParser(T)(Parser!(T) function() parser)
 /// unittest to show the simplest usage of lazy
 @("lazy") unittest
 {
-    import unit_threaded;
-
     // endless -> a | a opt(endless)
     struct Endless
     {
@@ -324,13 +311,13 @@ Parser!(T) lazyParser(T)(Parser!(T) function() parser)
 
     auto p = Endless.parser();
     auto res = p.parse("aa");
-    res.success.shouldBeTrue;
-    res.results.shouldEqual(["a", "a"]);
+    res.success.should == true;
+    res.results.should == ["a", "a"];
 
     res = p.parse("aab");
-    res.success.shouldBeTrue;
-    res.results.shouldEqual(["a", "a"]);
-    res.rest.shouldEqual("b");
+    res.success.should == true;
+    res.results.should == ["a", "a"];
+    res.rest.should == "b";
 }
 
 /// class for matching an array exactly
@@ -390,33 +377,27 @@ Parser!(T) match(T)(T[] s, bool collect = true)
 /// matching a string
 @("match") unittest
 {
-    import unit_threaded;
-
     auto parser = match("test");
     auto res = parser.parseAll("test");
 
-    res.success.shouldBeTrue;
-    res.rest.length.shouldEqual(0);
+    res.success.should == true;
+    res.rest.length.should == 0;
 }
 
 @("match 2") unittest
 {
-    import unit_threaded;
-
     auto parser = match("test");
     auto res = parser.parse("test2");
-    res.success.shouldBeTrue;
-    res.rest.shouldEqual("2");
+    res.success.should == true;
+    res.rest.should == "2";
 
     res = parser.parseAll("test2");
-    res.success.shouldBeFalse;
+    res.success.should == false;
 }
 
 /// transform match result
 @("match + transform") unittest
 {
-    import unit_threaded;
-
     auto parser = match("test") ^^ (objects) {
         auto res = objects;
         if (objects[0] == "test")
@@ -426,29 +407,25 @@ Parser!(T) match(T)(T[] s, bool collect = true)
         return objects;
     };
     auto res = parser.parse("test");
-    res.success.shouldBeTrue;
-    res.results[0].shouldEqual("super");
+    res.success.should == true;
+    res.results[0].should == "super";
 }
 
 @("match - discard") unittest
 {
-    import unit_threaded;
-
     auto parser = match("test", false);
     auto res = parser.parseAll("test");
-    res.success.shouldBeTrue;
-    res.results.length.shouldEqual(0);
+    res.success.should == true;
+    res.results.length.should == 0;
 }
 
 @("match on arrays") unittest
 {
-    import unit_threaded;
-
     auto parser = match([1, 2, 3]);
     auto res = parser.parseAll([1, 2, 3]);
-    res.success.shouldBeTrue;
-    res.results.length.shouldEqual(1);
-    res.results[0].shouldEqual([1, 2, 3]);
+    res.success.should == true;
+    res.results.length.should == 1;
+    res.results[0].should == [1, 2, 3];
 }
 
 /// convenient function to instantiate a number parser
@@ -470,12 +447,10 @@ Parser!(T) number(T)()
 /// unittests for number parser
 @("number parser") unittest
 {
-    import unit_threaded;
-
     auto parser = number!(immutable(char))();
     auto res = parser.parse("123.123");
-    res.success.shouldBeTrue;
-    res.results[0].shouldEqual(123.123);
+    res.success.should == true;
+    res.results[0].should == 123.123;
 }
 
 /// class for matching something optional
@@ -505,45 +480,39 @@ class Optional(T) : Parser!(T)
 /// unittests to show the usage of OptionalParser and its dsl '-'
 @("optional and dsl") unittest
 {
-    import unit_threaded;
-
     auto abc = match("abc");
     auto opt = -abc;
     auto res = opt.parse("abc");
-    res.success.shouldBeTrue;
-    res.results.length.shouldEqual(1);
-    res.results[0].shouldEqual("abc");
-    res.rest.length.shouldEqual(0);
+    res.success.should == true;
+    res.results.length.should == 1;
+    res.results[0].should == "abc";
+    res.rest.length.should == 0;
 }
 
 /// unittest to show optional in action.
 @("optional") unittest
 {
-    import unit_threaded;
-
     auto abc = match("abc");
     auto opt = -abc;
     auto res = opt.parse("efg");
     auto withoutOptional = abc.parse("efg");
-    withoutOptional.success.shouldBeFalse;
-    res.success.shouldBeTrue;
-    res.results.length.shouldEqual(0);
-    res.rest.shouldEqual("efg");
+    withoutOptional.success.should == false;
+    res.success.should == true;
+    res.results.length.should == 0;
+    res.rest.should == "efg";
 }
 
 /// parse a number with or without sign
 @("parse number with or without +") unittest
 {
-    import unit_threaded;
-
     auto sign = match("+");
     auto value = match("1");
     auto test = (-sign) ~ value;
     auto resWithSign = test.parse("+1");
-    resWithSign.success.shouldBeTrue;
-    resWithSign.results.length.shouldEqual(2);
+    resWithSign.success.should == true;
+    resWithSign.results.length.should == 2;
     auto resWithoutSign = test.parse("1");
-    resWithoutSign.success.shouldBeTrue;
+    resWithoutSign.success.should == true;
 }
 
 /++
@@ -602,19 +571,15 @@ Parser!(T) regex(T)(T[] s, bool collect = true)
 /// regexParser
 @("regex parser") unittest
 {
-    import unit_threaded;
-
     auto res = regex("(a)(.)(c)").parse("abcd");
-    res.success.shouldBeTrue;
-    res.results.shouldEqual(["abc", "a", "b", "c"]);
+    res.success.should == true;
+    res.results.should == ["abc", "a", "b", "c"];
     res.rest.shouldEqual("d");
 }
 
 /// regexParser works from the start of the input
 @("regex parser parses from start") unittest
 {
-    import unit_threaded;
-
     auto res = regex("abc").parse("babc");
     res.success.shouldBeFalse;
 }
@@ -652,8 +617,6 @@ static class Repetition(T) : Parser!(T)
 /// unittest for repetition
 @("repetition more than one") unittest
 {
-    import unit_threaded;
-
     auto parser = *match("a");
     auto res = parser.parse("aa");
     res.success.shouldBeTrue;
@@ -663,8 +626,6 @@ static class Repetition(T) : Parser!(T)
 
 @("repetition none") unittest
 {
-    import unit_threaded;
-
     auto parser = *match("a");
     auto res = parser.parse("b");
     res.success.shouldBeTrue;
@@ -673,8 +634,6 @@ static class Repetition(T) : Parser!(T)
 
 @("repetition with rest") unittest
 {
-    import unit_threaded;
-
     auto parser = *match("a");
     auto res = parser.parse("ab");
     res.success.shouldBeTrue;
@@ -683,8 +642,6 @@ static class Repetition(T) : Parser!(T)
 
 @("repetition with other parser") unittest
 {
-    import unit_threaded;
-
     auto parser = *(match("+") ~ match("-"));
     auto res = parser.parse("+-+-+");
     res.success.shouldBeTrue;
@@ -693,8 +650,6 @@ static class Repetition(T) : Parser!(T)
 
 @("repetition discarding result") unittest
 {
-    import unit_threaded;
-
     auto parser = *match("a", false);
     auto res = parser.parse("aaaa");
     res.success.shouldBeTrue;
@@ -704,8 +659,6 @@ static class Repetition(T) : Parser!(T)
 
 @("repetition transforming result") unittest
 {
-    import unit_threaded;
-
     auto parser = (*match("a")) ^^ (input) { return variantArray(input.length); };
     auto suc = parser.parseAll("aaaaa");
     suc.success.shouldBeTrue;
@@ -752,8 +705,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 /// unittests showing usage of sequence parser and dsl '~'
 @("sequence") unittest
 {
-    import unit_threaded;
-
     auto parser = match("a") ~ match("b");
     auto res = parser.parse("ab");
     res.success.shouldBeTrue;
@@ -762,8 +713,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 
 @("sequence and rest") unittest
 {
-    import unit_threaded;
-
     auto parser = match("a") ~ "b".match;
     auto res = parser.parse("abc");
     res.success.shouldBeTrue;
@@ -772,8 +721,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 
 @("sequence fails") unittest
 {
-    import unit_threaded;
-
     auto parser = match("a") ~ match("b");
     auto res = parser.parse("ac");
 
@@ -782,8 +729,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 
 @("sequence with discard result") unittest
 {
-    import unit_threaded;
-
     auto parser = match("a", false) ~ match("b");
     auto res = parser.parse("ab");
     res.success.shouldBeTrue;
@@ -814,8 +759,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 
 @("sequence and optional") unittest
 {
-    import unit_threaded;
-
     auto ab = -match("a") ~ match("b");
     auto res = ab.parse("ab");
     res.success.shouldBeTrue;
@@ -829,8 +772,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 
 @("sequence api not dsl") unittest
 {
-    import unit_threaded;
-
     auto ab = sequence(match("a"), match("b"));
     auto res = ab.parse("ab");
     res.success.shouldBeTrue;
@@ -838,8 +779,6 @@ Parser!(T) sequence(T)(Parser!(T)[] parsers...)
 
 @("sequence api") unittest
 {
-    import unit_threaded;
-
     auto ab = sequence(match("a"), match("b"), match("c"));
     auto res = ab.parse("abc");
     res.success.shouldBeTrue;

@@ -7,6 +7,8 @@
  +/
 module pc4d.parser;
 
+version (unittest) import unit_threaded;
+
 public import std.variant;
 
 import pc4d.parsers;
@@ -121,21 +123,6 @@ class Parser(T)
         }
     }
 
-    /// trying to parse all of the input
-    @("parseAll") unittest
-    {
-        import unit_threaded;
-
-        auto parser = match("test");
-        auto res = parser.parseAll("test");
-
-        res.success.shouldBeTrue;
-        res.rest.length.shouldEqual(0);
-
-        res = parser.parseAll("test1");
-        res.success.shouldBeFalse;
-    }
-
     /++
    + this must be implemented by subclasses
    + Params:
@@ -145,23 +132,6 @@ class Parser(T)
     ParseResult!(T) parse(T[] input)
     {
         throw new Exception("must be implemented in childs");
-    }
-
-    /// trying to parse part of the input
-    @("parse") unittest
-    {
-        import unit_threaded;
-
-        auto parser = match("test");
-        auto res = parser.parse("test");
-
-        res.success.shouldBeTrue;
-        res.rest.length.shouldEqual(0);
-
-        res = parser.parse("test1");
-        res.success.shouldBeTrue;
-
-        res.rest.shouldEqual("1");
     }
 
     /// dsl for repetition of a parser e.g. (*match("a")) matches sequences of a
@@ -183,38 +153,10 @@ class Parser(T)
         return setCallback(toCall);
     }
 
-    /// transforming from regexp string to integer
-    @("regexp to integer") unittest
-    {
-        import unit_threaded;
-        import std.conv;
-
-        auto res = (regex("\\d+") ^^ (input) {
-            return variantArray(input[0].get!string.to!int);
-        }).parse("123");
-        res.success.shouldBeTrue;
-        res.results[0].shouldEqual(123);
-    }
-
     /// dsl for alternatives e.g. match("abc") | match("def") matches "abc" or "def"
     Parser opBinary(string op)(Parser rhs) if (op == "|")
     {
         return or(this, rhs);
-    }
-    /// the pc4d.alternative parser and its dsl '|'
-    @("alternative dsl") unittest
-    {
-        import unit_threaded;
-
-        auto parser = match("abc") | match("def");
-        auto res = parser.parse("abc");
-        res.success.shouldBeTrue;
-
-        res = parser.parse("def");
-        res.success.shouldBeTrue;
-
-        res = parser.parse("ghi");
-        res.success.shouldBeFalse;
     }
 
     /// dsl for sequences e.g. match("a") ~ match("b") matches "ab"
@@ -247,4 +189,59 @@ class Parser(T)
         }
     }
 
+}
+
+/// transforming from regexp string to integer
+@("regexp to integer") unittest
+{
+    import std.conv;
+
+    auto res = (regex("\\d+") ^^ (input) {
+        return variantArray(input[0].get!string
+            .to!int);
+    }).parse("123");
+    res.success.should == true;
+    res.results[0].should == 123;
+}
+
+/// the pc4d.alternative parser and its dsl '|'
+@("alternative dsl") unittest
+{
+    auto parser = match("abc") | match("def");
+    auto res = parser.parse("abc");
+    res.success.should == true;
+
+    res = parser.parse("def");
+    res.success.should == true;
+
+    res = parser.parse("ghi");
+    res.success.should == false;
+}
+
+/// trying to parse all of the input
+@("parseAll") unittest
+{
+    auto parser = match("test");
+    auto res = parser.parseAll("test");
+
+    res.success.should == true;
+    res.rest.length.should == 0;
+
+    res = parser.parseAll("test1");
+    res.success.should == false;
+}
+
+/// trying to parse part of the input
+@("parse") unittest
+{
+    auto parser = match("test");
+    auto res = parser.parse("test");
+
+    res.success.should == true;
+    res.rest.length.should == 0;
+
+    res = parser.parse("test1");
+    res.success.should == true;
+
+    res.rest.should == "1";
 }

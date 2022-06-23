@@ -6,7 +6,5 @@
 
 module pc4d;
 
-public import pc4d.packageversion;
-
 public import pc4d.parser;
 public import pc4d.parsers;

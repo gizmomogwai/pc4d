@@ -16,7 +16,7 @@ import std.functional;
 /// convenient function to instantiate a AlphaNumericParser
 auto alnum(T)(bool collect = true)
 {
-    return new Regex(r"-?\w[\w\d]*", collect) ^^ (data) {
+    return new Regex(`-?\w[\w\d]*`, collect) ^^ (data) {
         return variantArray(data[0]);
     };
 }

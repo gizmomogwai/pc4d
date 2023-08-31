@@ -147,6 +147,13 @@ class Parser(T)
     }
 
     /// dsl for transforming results of a parser
+    Parser opBinary(string op)(Variant[]delegate(Variant[] objects) toCall)
+            if (op == "^^")
+    {
+        return setCallback(toCall);
+    }
+
+    /// dsl for transforming results of a parser
     Parser opBinary(string op)(Variant[]function(Variant[] objects) toCall)
             if (op == "^^")
     {
@@ -245,3 +252,4 @@ class Parser(T)
 
     res.rest.should == "1";
 }
+

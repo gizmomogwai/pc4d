@@ -7,18 +7,15 @@
  +/
 module pc4d.parser;
 
-version (unittest) import unit_threaded;
+import pc4d.parsers : or, sequence, regex, match, Optional, Repetition;
+import std.conv : to;
+import std.functional : toDelegate;
+import std.variant : Variant, variantArray;
 
-public import std.variant;
-
-import pc4d.parsers;
-import std.array;
-import std.ascii;
-import std.conv;
-import std.functional;
-import std.stdio;
-import std.string;
-import std.string;
+version (unittest)
+{
+    import unit_threaded;
+}
 
 /**
  * Result of a parsing step.
@@ -83,7 +80,7 @@ class ParseResult(T)
     {
         if (!success)
         {
-            throw new Exception("no results available");
+            throw new Exception("no results available rest: " ~ fMessage);
         }
         return fResults;
     }
@@ -201,11 +198,8 @@ class Parser(T)
 /// transforming from regexp string to integer
 @("regexp to integer") unittest
 {
-    import std.conv;
-
     auto res = (regex("\\d+") ^^ (input) {
-        return variantArray(input[0].get!string
-            .to!int);
+        return variantArray(input[0].get!string.to!int);
     }).parse("123");
     res.success.should == true;
     res.results[0].should == 123;
@@ -252,4 +246,3 @@ class Parser(T)
 
     res.rest.should == "1";
 }
-

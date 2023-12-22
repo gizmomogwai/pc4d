@@ -6,12 +6,17 @@
 
 module pc4d.parsers;
 
-version (unittest) import unit_threaded;
+import pc4d.parser : Parser, ParseResult;
+import std.array : appender;
+import std.conv : to;
+import std.functional : toDelegate;
+import std.regex : stdMatch = match, stdRegex = regex;
+import std.variant : Variant, variantArray;
 
-import pc4d.parser;
-import std.array;
-import std.conv;
-import std.functional;
+version (unittest)
+{
+    import unit_threaded;
+}
 
 /// convenient function to instantiate a AlphaNumericParser
 auto alnum(T)(bool collect = true)
@@ -210,8 +215,6 @@ static class Integer : Regex
 {
     this()
     {
-        import std.conv;
-
         super(r"\d+") ^^ (input) {
             return variantArray(input[0].get!string
                     .to!int);
@@ -435,8 +438,8 @@ Parser!(T) number(T)()
         auto output = appender!(Variant[])();
         foreach (Variant o; input)
         {
-            string s = o.get!(string);
-            double h = std.conv.to!(double)(s);
+            auto s = o.get!(string);
+            auto h = s.to!(double);
             Variant v = h;
             output.put(v);
         }
@@ -531,9 +534,7 @@ class Regex : Parser!(immutable(char))
 
     override ParseResult!(immutable(char)) parse(string s)
     {
-        import std.regex;
-
-        auto res = std.regex.match(s, std.regex.regex(fRegex));
+        auto res = s.stdMatch(stdRegex(fRegex));
         if (res.empty())
         {
             return ParseResult!(immutable(char)).error(s ~ "did not match " ~ fRegex);
